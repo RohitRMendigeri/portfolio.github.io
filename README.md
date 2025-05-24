@@ -208,6 +208,28 @@ KD-Trees enable **real-time**, **location-aware intelligence** — crucial for e
 
 
 ---
+## 📌 Case Study 4: Huffman Encoding for Efficient Data Compression at Google
+
+### 🚧 Challenge  
+Compress large volumes of data efficiently without losing any information.
+
+### 🛠️ Solution Overview: Huffman Encoding  
+A **lossless compression algorithm** that assigns shorter binary codes to frequent symbols and longer codes to rare ones, reducing overall data size.
+
+### Working  
+1. Count frequencies of symbols.  
+2. Build a binary tree from least to most frequent symbols.  
+3. Assign unique prefix codes by traversing the tree.  
+4. Replace symbols with their binary codes for compression.
+
+
+###  Real-World Usage at Google  
+- Compressing images (JPEG in Google Photos)  
+- Audio compression in YouTube Music  
+- HTTP/2 header compression in Google Chrome
+
+
+---
 ## 📊 Business Case Studies
 
 ### 1. 🚀 Improving Search Result Relevance
