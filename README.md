@@ -227,7 +227,50 @@ A **lossless compression algorithm** that assigns shorter binary codes to freque
 - Compressing images (JPEG in Google Photos)  
 - Audio compression in YouTube Music  
 - HTTP/2 header compression in Google Chrome
+---
+## 📌 Case Study 5: Segment Trees in Google Analytics
 
+###  Challenge  
+Google systems like YouTube Analytics and Cloud Monitoring must perform **real-time range queries** (sum, min, max) and updates on **large time-series data** efficiently.
+
+
+
+###  Solution: Segment Trees  
+A **Segment Tree** is a binary tree that enables **log-time range queries and updates** by dividing data into manageable segments.
+
+🔧 Use Cases:
+-  Track views/clicks in a date range  
+-  Detect anomalies in system metrics  
+-  Real-time monitoring in dashboards
+
+
+###  Core Data Structures  
+- **Segment Tree Array:** Compact binary representation  
+- **Lazy Propagation (Optional):** For efficient range updates
+
+
+###  How It Works  
+
+- **Build:** Recursively divide and compute values  
+- **Query [L, R]:** Combine relevant segments  
+- **Update:** Modify value and update parent nodes
+
+
+###  Complexity
+
+| Operation     | Time       | Space    |
+|---------------|------------|----------|
+| Build         | O(N)       | O(2 × N) |
+| Query/Update  | O(log N)   | —        |
+
+
+
+###  Real-World Use at Google  
+-  **YouTube Analytics:** Fast stats over time ranges  
+-  **Cloud Monitoring:** Min/max for anomaly detection  
+-  **Google Ads:** Aggregate metrics over campaigns
+
+Segment Trees offer a great trade-off between speed and flexibility for Google's dynamic data needs.
 
 ---
 ## 📊 Business Case Studies
