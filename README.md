@@ -9,10 +9,8 @@ Whether it’s optimizing search results, scaling systems, or building intellige
 ## 👤 About Me
 
 - **Name:** Rohit Mendigeri  
-- **SRN:** PES2UG21CSXXX  
-- **College:** PES University, Bengaluru  
-- **Aspiration:** To work at Google and contribute to their mission of organizing the world’s information and making it universally accessible and useful.
-
+- **SRN:** 01FE22BCS226  
+- **College:** KLE University 
 ---
 
 ## 🌐 Domain: Google
