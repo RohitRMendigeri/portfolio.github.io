@@ -47,12 +47,12 @@ It operates under its parent company **Alphabet Inc.**, which houses a diverse s
 Google embodies innovation, scale, and impact. Its engineering culture encourages experimentation and excellence, making it the ideal environment for someone like me who loves building intelligent systems and solving large-scale problems. Through this portfolio, I aim to demonstrate how my technical skills align with the challenges faced in various Google products.
 
 ---
-## 📌 Case Study 1: How Trie Powers Google-Scale Systems
+## 📌 Case Study 1:  trie Powers in Google Systems
 
 ### 🚧 Challenges in Real-Time Systems  
 Systems like Google Search and Google DNS must handle massive-scale data with **low latency**, **high accuracy**, and **scalability**. The core challenge is to find the best match for a given prefix—quickly and efficiently.
 
----
+
 
 ### 🛠️ Solution Overview: Using Trie (Prefix Tree)  
 A **Trie** is a tree-like data structure ideal for **prefix-based lookup**. Each node represents a character (or bit), and paths from the root form complete strings or IP prefixes. Tries power:
@@ -60,7 +60,7 @@ A **Trie** is a tree-like data structure ideal for **prefix-based lookup**. Each
 - 🔎 **Autocomplete systems:** Predicting user search queries.  
 - 🌐 **IP routing systems:** Matching IP addresses to the longest prefix route.
 
----
+
 
 ### 🔍 Data Structures Used  
 - **Trie:** For efficient prefix matching.  
@@ -68,7 +68,7 @@ A **Trie** is a tree-like data structure ideal for **prefix-based lookup**. Each
 - **Min Heap / Priority Queue:** To rank top-K suggestions (Autocomplete).  
 - **Binary Trie:** Each node represents 0 or 1, ideal for IP address prefixes (Routing).
 
----
+
 
 ### 🧠 Algorithms  
 
@@ -83,7 +83,7 @@ A **Trie** is a tree-like data structure ideal for **prefix-based lookup**. Each
 1. Insert IP prefixes (e.g., `192.168.0.0/16`) into a binary Trie.  
 2. Convert destination IP addresses to binary form and perform the **longest prefix match** to determine the next hop.
 
----
+
 
 ### 🧮 Time & Space Complexity
 
@@ -98,7 +98,6 @@ A **Trie** is a tree-like data structure ideal for **prefix-based lookup**. Each
 - R = number of routes, P = prefix length, K = number of suggestions, M = total characters in matched suffixes
 - 32 = shows the bits in IPV4
 
----
 
 ### 🌟 Real-World Usage at Google  
 - 🔍 **Autocomplete:** Google Search, Gmail, YouTube, Android Keyboard  
@@ -112,7 +111,6 @@ Tries enable both **intelligent suggestions** and **high-speed routing**, making
 ### 🚧 Challenge
 Google Maps needs to compute **shortest and fastest routes** from millions of locations in real-time. The challenge lies in handling **dynamic road conditions** like traffic, closures, construction, and accidents — all while keeping routing **fast and accurate**.
 
----
 
 ### 🧠 What is A* Search?
 
@@ -125,7 +123,7 @@ It selects the path with the lowest **f(n) = g(n) + h(n)**.
 
 Compared to Dijkstra’s algorithm (which uses only `g(n)`), A\* adds **goal awareness** through `h(n)`, making it more efficient in practice.
 
----
+
 
 ### 🧮 Heuristic Design in Real Systems
 
@@ -139,7 +137,6 @@ We cam use **informed heuristics** that are both fast and realistic:
 
 These heuristics help guide the search efficiently while adapting to **real-world constraints**.
 
----
 
 ###  Handling Dynamic Edge Weights
 
@@ -151,7 +148,6 @@ Real-world roads aren't static:
 
 A* allows quick rerouting by recalculating the optimal path from the current node when conditions change — this is critical for **live navigation**.
 
----
 
 ### ⏱️ Time and Space Complexity
 
@@ -165,13 +161,53 @@ A* allows quick rerouting by recalculating the optimal path from the current nod
 
 In practice, **A\*** performs significantly faster due to the heuristic narrowing the search area.
 
----
 
-### 🌍 Real-World Usage
+
+###   Usage
 
 -  **Google Maps**: Live route planning, rerouting  updates.
 -  **Ride-sharing platforms** (e.g., Uber, Lyft): Smart driver dispatch and route prediction.
 -  **Logistics/Delivery**: Optimized paths for time-sensitive delivery.
+
+---
+## 📌 Case Study 3: KD-Trees for Location-Based Search at Google
+
+### 🚧 Challenge in Real-Time Systems  
+Quickly finding the nearest locations (e.g., businesses, data centers, delivery points) based on a user's current position.
+
+### 🛠️ Solution Overview: Using KD-Tree (K-Dimensional Tree)  
+A **KD-Tree** is a space-partitioning data structure used to organize points in a K-dimensional space (e.g., latitude and longitude for K=2). It enables efficient **nearest-neighbor** and **range queries** — perfect for location-aware services.
+
+- 📍 ** Maps:** Find nearby places like ATMs, cafés, or gas stations.  
+- 🚚 ** Delivery/Logistics:** Assign nearest delivery partners.  
+- 🗺️ ** Cloud Infrastructure:** Locate closest servers or CDN nodes for users.
+
+### 🔍 Data Structures Used  
+- **KD-Tree:** For organizing geo-locations in K-dimensional space.  
+- **Max Heap:** To maintain top-K closest locations during queries.  
+
+### 🧠 Algorithm – K-Dimensional Search (e.g., K = 2 for lat/lon)  
+1. **Build:** Recursively split points by cycling through K dimensions (e.g., lat → lon → lat…).  
+2. **Query:** Compare user location across K axes; traverse and backtrack if needed.  
+3. **Track:** Use Max Heap to maintain top-K nearest neighbors.
+
+### 🧮 Time & Space Complexity  
+
+| Operation         | Time Complexity | Space Complexity |
+|-------------------|------------------|------------------|
+| Build Tree        | O(N log N)       | O(N)             |
+| Nearest Neighbor  | O(log N) avg     | O(K)             |
+
+*Where:*  
+- N = number of locations, K = number of dimensions (e.g., 2 for lat/lon)
+
+### 🌟 Real-World Usage at Google  
+- 🗺️ **Maps & Search:** Find nearby POIs based on GPS.  
+- 🚚 **Logistics:** Match users with nearest drivers.  
+- 🌐 **CDNs & Edge Networks:** Route traffic to the closest server node.
+
+KD-Trees enable **real-time**, **location-aware intelligence** — crucial for enhancing user experience in mapping, search, and cloud systems.
+
 
 ---
 ## 📊 Business Case Studies
