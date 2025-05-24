@@ -47,6 +47,72 @@ It operates under its parent company **Alphabet Inc.**, which houses a diverse s
 Google embodies innovation, scale, and impact. Its engineering culture encourages experimentation and excellence, making it the ideal environment for someone like me who loves building intelligent systems and solving large-scale problems. Through this portfolio, I aim to demonstrate how my technical skills align with the challenges faced in various Google products.
 
 ---
+## 📌 Case Study 1: How Trie Powers Google-Scale Systems
+
+### 🚧 Challenges in Real-Time Systems  
+Systems like Google Search and Google DNS must handle massive-scale data with **low latency**, **high accuracy**, and **scalability**. The core challenge is to find the best match for a given prefix—quickly and efficiently.
+
+---
+
+### 🛠️ Solution Overview: Using Trie (Prefix Tree)  
+A **Trie** is a tree-like data structure ideal for **prefix-based lookup**. Each node represents a character (or bit), and paths from the root form complete strings or IP prefixes. Tries power:
+
+- 🔎 **Autocomplete systems:** Predicting user search queries.  
+- 🌐 **IP routing systems:** Matching IP addresses to the longest prefix route.
+
+---
+
+### 🔍 Data Structures Used  
+- **Trie:** For efficient prefix matching.  
+- **Hash Map:** To store query frequencies (Autocomplete).  
+- **Min Heap / Priority Queue:** To rank top-K suggestions (Autocomplete).  
+- **Binary Trie:** Each node represents 0 or 1, ideal for IP address prefixes (Routing).
+
+---
+
+### 🧠 Algorithms  
+
+#### 🔹 Autocomplete  
+1. Insert queries into the Trie along with frequency counts.  
+2. For a given prefix input:  
+   - Traverse to the corresponding prefix node.  
+   - Perform DFS to collect all possible suffixes.  
+   - Use a Min Heap to efficiently extract top-K frequent suggestions.
+
+#### 🔹 IP Routing  
+1. Insert IP prefixes (e.g., `192.168.0.0/16`) into a binary Trie.  
+2. Convert destination IP addresses to binary form and perform the **longest prefix match** to determine the next hop.
+
+---
+
+### 🧮 Time & Space Complexity
+
+| Operation            | Time Complexity        | Space Complexity       |
+|----------------------|------------------------|-----------------------|
+| Insert Queries/Routes | O(N × L) or O(R × 32)  | O(N × L) or O(R × 32) |
+| Prefix Lookup        | O(P) or O(32)          | O(K) (for suggestions)|
+| Suggestion Retrieval | O(M log K)             | —                     |
+
+*Where:*  
+- N = number of queries, L = average length of query  
+- R = number of routes, P = prefix length, K = number of suggestions, M = total characters in matched suffixes
+- 32 shows the bits in IPV4
+---
+
+### 💡 Enhancements  
+- Incorporate recency-weighted ranking for autocomplete results.  
+- Implement LRU caching to speed up frequent prefix lookups.  
+- Use optimized Tries like Patricia Trie for compressed and faster routing tables.
+
+---
+
+### 🌟 Real-World Usage at Google  
+- 🔍 **Autocomplete:** Google Search, Gmail, YouTube, Android Keyboard  
+- 🌐 **Routing:** Google Public DNS (8.8.8.8), Content Delivery Networks (CDNs), and Google’s global server infrastructure
+
+Tries enable both **intelligent suggestions** and **high-speed routing**, making them essential for building responsive, scalable, and efficient systems.
+
+---
 
 ## 📊 Business Case Studies
 
