@@ -47,20 +47,20 @@ Google embodies innovation, scale, and impact. Its engineering culture encourage
 ---
 ## 📌 Case Study 1:  trie Powers in Google Systems
 
-### 🚧 Challenges in Real-Time Systems  
+###  Challenges in Real-Time Systems  
 Systems like Google Search and Google DNS must handle massive-scale data with **low latency**, **high accuracy**, and **scalability**. The core challenge is to find the best match for a given prefix—quickly and efficiently.
 
 
 
-### 🛠️ Solution Overview: Using Trie (Prefix Tree)  
+###  Solution Overview: Using Trie (Prefix Tree)  
 A **Trie** is a tree-like data structure ideal for **prefix-based lookup**. Each node represents a character (or bit), and paths from the root form complete strings or IP prefixes. Tries power:
 
-- 🔎 **Autocomplete systems:** Predicting user search queries.  
-- 🌐 **IP routing systems:** Matching IP addresses to the longest prefix route.
+-  **Autocomplete systems:** Predicting user search queries.  
+-  **IP routing systems:** Matching IP addresses to the longest prefix route.
 
 
 
-### 🔍 Data Structures Used  
+###  Data Structures Used  
 - **Trie:** For efficient prefix matching.  
 - **Hash Map:** To store query frequencies (Autocomplete).  
 - **Min Heap / Priority Queue:** To rank top-K suggestions (Autocomplete).  
@@ -68,22 +68,22 @@ A **Trie** is a tree-like data structure ideal for **prefix-based lookup**. Each
 
 
 
-### 🧠 Algorithms  
+###  Algorithms  
 
-#### 🔹 Autocomplete  
+####  Autocomplete  
 1. Insert queries into the Trie along with frequency counts.  
 2. For a given prefix input:  
    - Traverse to the corresponding prefix node.  
    - Perform DFS to collect all possible suffixes.  
    - Use a Min Heap to efficiently extract top-K frequent suggestions.
 
-#### 🔹 IP Routing  
+####  IP Routing  
 1. Insert IP prefixes (e.g., `192.168.0.0/16`) into a binary Trie.  
 2. Convert destination IP addresses to binary form and perform the **longest prefix match** to determine the next hop.
 
 
 
-### 🧮 Time & Space Complexity
+###  Time & Space Complexity
 
 | Operation            | Time Complexity        | Space Complexity       |
 |----------------------|------------------------|-----------------------|
@@ -97,20 +97,20 @@ A **Trie** is a tree-like data structure ideal for **prefix-based lookup**. Each
 - 32 = shows the bits in IPV4
 
 
-### 🌟 Real-World Usage at Google  
-- 🔍 **Autocomplete:** Google Search, Gmail, YouTube, Android Keyboard  
-- 🌐 **Routing:** Google Public DNS (8.8.8.8), Content Delivery Networks (CDNs), and Google’s global server infrastructure
+###  Real-World Usage at Google  
+-  **Autocomplete:** Google Search, Gmail, YouTube, Android Keyboard  
+-   **Routing:** Google Public DNS (8.8.8.8), Content Delivery Networks (CDNs), and Google’s global server infrastructure
 
 Tries enable both **intelligent suggestions** and **high-speed routing**, making them essential for building responsive, scalable, and efficient systems.
 
 ---
 ## 📌 Case Study 2: How A* Search Optimizes Google Maps Navigation
 
-### 🚧 Challenge
+###  Challenge
 Google Maps needs to compute **shortest and fastest routes** from millions of locations in real-time. The challenge lies in handling **dynamic road conditions** like traffic, closures, construction, and accidents — all while keeping routing **fast and accurate**.
 
 
-### 🧠 What is A* Search?
+###  What is A* Search?
 
 A\* (A-Star) is a **best-first search** algorithm that finds the **optimal path** by balancing two factors:
 
@@ -123,7 +123,7 @@ Compared to Dijkstra’s algorithm (which uses only `g(n)`), A\* adds **goal awa
 
 
 
-### 🧮 Heuristic Design in Real Systems
+###  Heuristic Design in Real Systems
 
 We cam use **informed heuristics** that are both fast and realistic:
 
@@ -147,7 +147,7 @@ Real-world roads aren't static:
 A* allows quick rerouting by recalculating the optimal path from the current node when conditions change — this is critical for **live navigation**.
 
 
-### ⏱️ Time and Space Complexity
+###  Time and Space Complexity
 
 | Operation         | Complexity         |
 |------------------|--------------------|
@@ -170,26 +170,26 @@ In practice, **A\*** performs significantly faster due to the heuristic narrowin
 ---
 ## 📌 Case Study 3: KD-Trees for Location-Based Search at Google
 
-### 🚧 Challenge in Real-Time Systems  
+###  Challenge in Real-Time Systems  
 Quickly finding the nearest locations (e.g., businesses, data centers, delivery points) based on a user's current position.
 
-### 🛠️ Solution Overview: Using KD-Tree (K-Dimensional Tree)  
+###  Solution Overview: Using KD-Tree (K-Dimensional Tree)  
 A **KD-Tree** is a space-partitioning data structure used to organize points in a K-dimensional space (e.g., latitude and longitude for K=2). It enables efficient **nearest-neighbor** and **range queries** — perfect for location-aware services.
 
-- 📍 ** Maps:** Find nearby places like ATMs, cafés, or gas stations.  
-- 🚚 ** Delivery/Logistics:** Assign nearest delivery partners.  
-- 🗺️ ** Cloud Infrastructure:** Locate closest servers or CDN nodes for users.
+-  **Maps:** Find nearby places like ATMs, cafés, or gas stations.  
+-  **Delivery/Logistics:** Assign nearest delivery partners.  
+-  **Cloud Infrastructure:** Locate closest servers or CDN nodes for users.
 
-### 🔍 Data Structures Used  
+###  Data Structures Used  
 - **KD-Tree:** For organizing geo-locations in K-dimensional space.  
 - **Max Heap:** To maintain top-K closest locations during queries.  
 
-### 🧠 Algorithm – K-Dimensional Search (e.g., K = 2 for lat/lon)  
+###  Algorithm – K-Dimensional Search (e.g., K = 2 for lat/lon)  
 1. **Build:** Recursively split points by cycling through K dimensions (e.g., lat → lon → lat…).  
 2. **Query:** Compare user location across K axes; traverse and backtrack if needed.  
 3. **Track:** Use Max Heap to maintain top-K nearest neighbors.
 
-### 🧮 Time & Space Complexity  
+###  Time & Space Complexity  
 
 | Operation         | Time Complexity | Space Complexity |
 |-------------------|------------------|------------------|
@@ -199,10 +199,10 @@ A **KD-Tree** is a space-partitioning data structure used to organize points in 
 *Where:*  
 - N = number of locations, K = number of dimensions (e.g., 2 for lat/lon)
 
-### 🌟 Real-World Usage at Google  
-- 🗺️ **Maps & Search:** Find nearby POIs based on GPS.  
-- 🚚 **Logistics:** Match users with nearest drivers.  
-- 🌐 **CDNs & Edge Networks:** Route traffic to the closest server node.
+###  Usage 
+-  **Maps & Search:** Find nearby POIs based on GPS.  
+-  **Logistics:** Match users with nearest drivers.  
+-  **CDNs & Edge Networks:** Route traffic to the closest server node.
 
 KD-Trees enable **real-time**, **location-aware intelligence** — crucial for enhancing user experience in mapping, search, and cloud systems.
 
