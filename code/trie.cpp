@@ -111,11 +111,13 @@ public:
 
 int main() {
     Trie trie;
-    cout << "Inserting words: Striver, Striving, String, Strike" << endl;
+    cout << "Inserting words: Striver, Striving, String, Strike , strohit" << endl;
     trie.insert("striver");
     trie.insert("striving");
     trie.insert("string");
     trie.insert("strike");
+    trie.insert("strohit");
+    
     
     cout << "Search if Strawberry exists in trie: " <<
     (trie.search("strawberry") ? "True" : "False")<< endl;
