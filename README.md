@@ -97,14 +97,7 @@ A **Trie** is a tree-like data structure ideal for **prefix-based lookup**. Each
 - N = number of queries, L = average length of query  
 - R = number of routes, P = prefix length, K = number of suggestions, M = total characters in matched suffixes
 - 32 = shows the bits in IPV4
-<!--
----
 
-### 💡 Enhancements  
-- Incorporate recency-weighted ranking for autocomplete results.  
-- Implement LRU caching to speed up frequent prefix lookups.  
-- Use optimized Tries like Patricia Trie for compressed and faster routing tables.
- -->
 ---
 
 ### 🌟 Real-World Usage at Google  
