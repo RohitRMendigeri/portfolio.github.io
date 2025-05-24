@@ -96,14 +96,15 @@ A **Trie** is a tree-like data structure ideal for **prefix-based lookup**. Each
 *Where:*  
 - N = number of queries, L = average length of query  
 - R = number of routes, P = prefix length, K = number of suggestions, M = total characters in matched suffixes
-- 32 shows the bits in IPV4
+- 32 = shows the bits in IPV4
+<!--
 ---
 
 ### 💡 Enhancements  
 - Incorporate recency-weighted ranking for autocomplete results.  
 - Implement LRU caching to speed up frequent prefix lookups.  
 - Use optimized Tries like Patricia Trie for compressed and faster routing tables.
-
+ -->
 ---
 
 ### 🌟 Real-World Usage at Google  
@@ -113,7 +114,73 @@ A **Trie** is a tree-like data structure ideal for **prefix-based lookup**. Each
 Tries enable both **intelligent suggestions** and **high-speed routing**, making them essential for building responsive, scalable, and efficient systems.
 
 ---
+## 📌 Case Study 2: How A* Search Optimizes Google Maps Navigation
 
+### 🚧 Challenge
+Google Maps needs to compute **shortest and fastest routes** from millions of locations in real-time. The challenge lies in handling **dynamic road conditions** like traffic, closures, construction, and accidents — all while keeping routing **fast and accurate**.
+
+---
+
+### 🧠 What is A* Search?
+
+A\* (A-Star) is a **best-first search** algorithm that finds the **optimal path** by balancing two factors:
+
+- `g(n)`: Actual cost from start node to current node
+- `h(n)`: Heuristic estimate of the cost from current node to goal
+
+It selects the path with the lowest **f(n) = g(n) + h(n)**.
+
+Compared to Dijkstra’s algorithm (which uses only `g(n)`), A\* adds **goal awareness** through `h(n)`, making it more efficient in practice.
+
+---
+
+### 🧮 Heuristic Design in Real Systems
+
+We cam use **informed heuristics** that are both fast and realistic:
+
+-  **Straight-line distance** (Haversine or Euclidean) — base estimate.
+-  **Real-time traffic data** — adds weight to congested roads.
+-  **Road type priority** — highways are faster than city roads.
+-  **Time-of-day effects** — rush hour patterns, school zones.
+-  **Dynamic closures & incidents** — makes some edges temporarily unusable.
+
+These heuristics help guide the search efficiently while adapting to **real-world constraints**.
+
+---
+
+###  Handling Dynamic Edge Weights
+
+Real-world roads aren't static:
+
+- **Live edge weight updates** for changing travel times (traffic).
+- **Edge pruning** for closed or under-construction roads.
+- **Replanning on-the-fly** using updated graph data.
+
+A* allows quick rerouting by recalculating the optimal path from the current node when conditions change — this is critical for **live navigation**.
+
+---
+
+### ⏱️ Time and Space Complexity
+
+| Operation         | Complexity         |
+|------------------|--------------------|
+| Time (Worst Case) | O(E) or O(V + E) log V (with Min Heap) |
+| Space             | O(V)               |
+
+- `V` = number of nodes (intersections)
+- `E` = number of edges (roads)
+
+In practice, **A\*** performs significantly faster due to the heuristic narrowing the search area.
+
+---
+
+### 🌍 Real-World Usage
+
+-  **Google Maps**: Live route planning, rerouting  updates.
+-  **Ride-sharing platforms** (e.g., Uber, Lyft): Smart driver dispatch and route prediction.
+-  **Logistics/Delivery**: Optimized paths for time-sensitive delivery.
+
+---
 ## 📊 Business Case Studies
 
 ### 1. 🚀 Improving Search Result Relevance
