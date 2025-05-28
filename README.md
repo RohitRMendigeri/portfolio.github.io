@@ -575,7 +575,7 @@ Sliding windows also help detect bots:
 - If an account likes/comments on hundreds of videos in a short span, it's flagged using a **behavioral sliding window**.
 - Similar to Gmail’s usage, but with a focus on action frequency in **video sessions**.
 
----
+
 
 ###  Uses Cases Sliding Windows
 
@@ -584,9 +584,9 @@ Sliding windows also help detect bots:
 
 
 
-### ⚙️ Algorithmic Details
+###  Algorithmic Details
 
-#### 🧰 Core Data Structures Used
+####  Core Data Structures Used
 
 | Data Structure      | Purpose                                           |
 |---------------------|---------------------------------------------------|
@@ -594,7 +594,6 @@ Sliding windows also help detect bots:
 | **HashMap**         | Count occurrences, manage frequency windows       |
 | **Rolling Hash**    | Used in Rabin-Karp for fast substring comparisons |
 
----
 
 #### 🔗 Common Algorithm Pairings
 
@@ -604,12 +603,138 @@ Sliding windows also help detect bots:
 | **Aho-Corasick**     | Multiple pattern string matching                     |
 | **Token Bucket**     | Rate-limiting over a sliding time window             |
 
----
+
 
 ###  Final Impact  
 The Sliding Window technique powers Gmail’s real-time spam detection and YouTube’s dynamic user engagement tracking. By focusing only on the **most recent and relevant** data, Google avoids performance bottlenecks while ensuring responsive, personalized experiences across its platforms.
 
+---
+##  📌 Case Study: Google Bigtable – Scalable Structured Data Storage
 
+##  Problem Statement
+
+Google required a storage system that could:
+
+- Handle **petabytes of structured data**
+- Provide **low-latency access**
+- Support **real-time read/write operations**
+- Scale across **thousands of commodity servers**
+
+Traditional RDBMS systems couldn’t meet these requirements. Hence, **Bigtable** was developed.
+
+---
+
+##  Solution:
+
+**Bigtable** is a distributed, sparse, multidimensional sorted map. The data model can be visualized as: (row_key, column_family:column_qualifier, timestamp) → value
+
+
+This design supports:
+
+- **Versioning** (with timestamps)
+- **Efficient lookups**
+- **Horizontal scalability**
+
+
+
+##  Core Data Structures in Bigtable
+
+### 1. MemTable
+- An **in-memory** sorted data structure (usually implemented as a Red-Black Tree or Skip List).
+- Accumulates writes.
+- Flushed to disk as **SSTables** when full.
+
+### 2. SSTable (Sorted String Table)
+- Immutable file storing key-value pairs sorted by key.
+- Organized to allow **binary search** and **range scans**.
+- Used for **persistent storage** on disk.
+
+### 3. Write-Ahead Log (WAL)
+- Also known as a **commit log**.
+- Records mutations before applying to the memtable.
+- Ensures **durability** in case of crashes.
+
+### 4. Bloom Filters
+- Used to **quickly check** if an SSTable might contain a key.
+- Probabilistic, avoids unnecessary disk reads.
+- Time complexity: O(1) for lookup.
+
+### 5. Tablet
+- A **horizontal partition** of a Bigtable table.
+- Each tablet is served by one tablet server.
+- Tablets contain SSTables + a memtable + metadata.
+
+### 6. B+ Tree-Like Structure
+- Underlying mechanism in SSTables to support **fast range queries**.
+- Supports binary search on disk blocks.
+
+### 7. Chubby Lock Service
+- Used for **master election**, **tablet assignment**, and **metadata consistency**.
+- Ensures **consensus and synchronization** among nodes.
+
+
+
+## 🔄 Bigtable Workflow: Read/Write Operations
+
+### ✅ Write Path
+
+1. **Client sends a write** (put/delete).
+2. Write is recorded in the **Write-Ahead Log (WAL)**.
+3. Write is inserted into the **MemTable**.
+4. When MemTable grows large:
+   - It's **flushed** to disk as an **SSTable**.
+   - SSTables are stored in **GFS (Google File System)**.
+
+### 🔍 Read Path
+
+1. Client requests a key or key range.
+2. Bigtable checks:
+   - **MemTable** (for recent writes)
+   - **Bloom Filters** to identify relevant SSTables
+   - **SSTables** (older, persisted data)
+3. Results are **merged** (newest timestamp wins).
+
+
+
+## 🔃 Compaction Process
+
+To maintain performance, Bigtable performs **compaction**:
+
+- **Minor Compaction**: Merge small SSTables.
+- **Major Compaction**: Merge all SSTables into one.
+- **Garbage Collection**: Removes deleted/expired entries.
+
+This keeps read paths efficient by reducing the number of SSTables per tablet.
+
+
+
+## 🧮 Time and Space Complexity
+
+| Operation         | Time Complexity      | Notes                                    |
+|-------------------|----------------------|-------------------------------------------|
+| **Write**         | Amortized O(1)       | Buffered in memtable                      |
+| **Read (lookup)** | O(log n + k)         | Log n for SSTable + k for merging versions |
+| **Range Scan**    | O(k)                 | Efficient due to SSTable sorting          |
+| **Compaction**    | O(n)                 | Depends on size of SSTables being merged  |
+| **Space**         | Efficient            | Uses compaction, Bloom filters, and compression |
+
+
+
+## 🧰 Use in Google's Ecosystem
+
+Bigtable is used in:
+
+- **Google Search** – Indexing web pages
+- **Google Maps** – Spatial data
+- **Google Analytics** – Event data
+- **YouTube** – Metadata and user preferences
+- **Google Earth** – Geospatial data
+
+It also inspired:
+
+- Apache HBase (Hadoop ecosystem)
+- Cassandra (Facebook, now open source)
+- Amazon DynamoDB (inspired by similar principles)
 
 ---
 ## 📊 Business Case Studies
