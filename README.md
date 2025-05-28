@@ -457,7 +457,7 @@ UCS is a graph search algorithm that always expands the node with the smallest c
 Uniform Cost Search enables **optimal, cost-aware decision making** across Google’s large-scale, weighted graph problems, especially where multiple potential goals exist.
 
 ---
-## 📌 Case Study 11: Modular Multiplicative Inverse (MMI) in Secure Computation
+## 📌 Case Study 10: Modular Multiplicative Inverse (MMI) in Secure Computation
 
 ### Challenge  
 Google requires **efficient modular arithmetic** operations for cryptography, data integrity, and distributed systems, where modular division is needed but direct division is not possible.
@@ -499,7 +499,7 @@ Common methods to compute MMI:
 MMI is a fundamental building block enabling **secure, efficient, and reliable modular arithmetic** in Google's large-scale systems.
 
 ---
-## 📌 Case Study 12: Skip Lists for Efficient Ordered Data Access
+## 📌 Case Study 11: Skip Lists for Efficient Ordered Data Access
 
 ### Challenge  
 Google services need to manage **large, dynamic datasets** with fast search, insertion, and deletion operations while maintaining sorted order and supporting range queries. Traditional balanced trees can be complex to implement and maintain at scale.
@@ -533,49 +533,83 @@ A **Skip List** is a layered, probabilistic data structure that enables **fast a
 Skip Lists offer a simpler and more concurrent-friendly alternative to balanced trees, making them ideal for Google’s need to handle massive, ordered data efficiently and reliably.
 
 ---
-## 📌 Case Study 13: Sliding Window Technique for Efficient Data Stream Processing
+## 📌 Case Study 12: Sliding Window Algorithm in Gmail and YouTube
 
-### Challenge  
-Google handles massive real-time data streams—user activity logs, search queries, network traffic, video frames—that require fast, continuous processing of subranges or recent data without reprocessing the entire dataset from scratch.
+###  The Challenge  
+At massive scale, Google services like **Gmail** and **YouTube** face a common problem: making real-time decisions from fast, continuous streams of data. Gmail must filter spam the moment an email arrives. YouTube needs to track engagement patterns and detect suspicious activity from billions of viewers.
 
-### Solution: Sliding Window  
-The **Sliding Window** technique maintains a fixed-size subset of data that “slides” over the input. As new elements enter the window and old ones exit, you update your metrics incrementally, avoiding full recomputation.
-
-
-### Implementation & Algorithm  
-1. **Initialize** two pointers (`start`, `end`) and a container (queue, deque, hash map, etc.).  
-2. **Expand** the window by moving `end` forward, adding the new element.  
-3. **Shrink** the window by moving `start` forward, removing the expired element.  
-4. **Update** your aggregate or data structure (sum, max, counts, hashes).  
-5. **Repeat** until the stream ends.
-
-Runs in **O(n)** time overall, with **O(1)** or **O(window size)** per update.
-
-
-### Real-Time Use Cases at Google  
-- **Google Analytics:** Rolling active-user counts, session metrics.  
-- **YouTube Trending:** Frequency of views or likes over recent time windows.  
-- **Cloud Monitoring:** Bandwidth, error rates, or CPU usage on sliding intervals.  
-- **YouTube Video Processing:** Frame-based filter application in live streams.  
-
-### Under-the-Hood Algorithms Using Sliding Windows  
-- **Rabin–Karp (Substring Search):** Rolling hash on fixed-length windows for fast search and plagiarism detection in Search.  
-- **LZ77 Compression (gzip/HTTP/2):** Maintains a look-back buffer to find repeated substrings, used in Chrome and server-side compression.  
-- **TCP Congestion Control (Sliding Window Protocol):** Manages in-flight packets to maximize throughput and minimize loss across Google’s networks.  
-- **Dataflow Windowing (Beam / Dataflow):** Tumbling, sliding, and session windows for distributed stream processing in Google Cloud Dataflow.  
-- **Anomaly Detection:** Sliding-window statistics (mean, variance) for real-time alerting in Google’s Site Reliability systems.  
+But scanning entire datasets every second is too costly. Enter: the **Sliding Window Algorithm** — a powerful approach to manage time-sensitive insights efficiently.
 
 
 
-### Time Complexity  
+###  The Algorithm: Sliding Window Approach  
+Sliding Window is a technique where a **subset of data** (the "window") is analyzed while moving through a larger dataset, step-by-step. It ensures:
+- **Constant-time updates** (as old data exits and new enters)
+- **Memory efficiency** (since only the window is stored)
+- **Real-time insights** (without reprocessing everything)
 
-| Operation         | Cost               |
-|-------------------|--------------------|
-| Per-element update| O(1) or O(window)  |
-| Full pass         | O(n)               |
 
 
-Sliding window is a **fundamental** building block in Google’s large-scale systems, enabling **incremental**, **low-latency** computation over continuous data streams and weighted graphs alike.  
+###  In Gmail: Detecting Spam in Real-Time
+
+#### 1. **Spam Phrase Detection**  
+A window slides over email content to detect repeated suspicious phrases. This is often combined with:
+- **Rabin-Karp Algorithm**: Uses a rolling hash (sliding window of characters) to match known spam patterns.
+- **Aho-Corasick Algorithm**: For multi-pattern matching, speeding up detection of multiple blacklisted phrases in a single scan.
+
+#### 2. **Sender Behavior Monitoring**  
+Gmail monitors how many emails a user sends within a time window. If a user sends, say, 50 emails in 30 seconds, they might be flagged for spam.
+
+This uses a **time-based sliding window**, similar in spirit to **rate limiting** and the **Token Bucket algorithm** — allowing Gmail to detect bursts without over-blocking occasional peaks.
+
+
+###  In YouTube: Engagement and Anomaly Detection
+
+#### 1. **Watch-Time Drop-Off Analysis**  
+YouTube tracks where users **stop watching** a video. A sliding window moves through time-stamped engagement logs:
+- If many users drop off between `00:45`–`01:15`, this chunk is flagged as potentially boring or irrelevant.
+- Creators get feedback based on **aggregated sliding windows**, allowing them to improve content pacing.
+
+#### 2. **Suspicious Behavior Detection**  
+Sliding windows also help detect bots:
+- If an account likes/comments on hundreds of videos in a short span, it's flagged using a **behavioral sliding window**.
+- Similar to Gmail’s usage, but with a focus on action frequency in **video sessions**.
+
+---
+
+###  Uses Cases Sliding Windows
+
+- **Google Trends**: Detects search bursts within moving 5-minute or 1-hour windows.
+- **Google Safe Browsing**: Monitors URL visit frequency in short windows to assess phishing threats.
+
+
+
+### ⚙️ Algorithmic Details
+
+#### 🧰 Core Data Structures Used
+
+| Data Structure      | Purpose                                           |
+|---------------------|---------------------------------------------------|
+| **Deque**           | Efficiently track max/min within a sliding window |
+| **HashMap**         | Count occurrences, manage frequency windows       |
+| **Rolling Hash**    | Used in Rabin-Karp for fast substring comparisons |
+
+---
+
+#### 🔗 Common Algorithm Pairings
+
+| Algorithm            | Use Case with Sliding Window                         |
+|----------------------|------------------------------------------------------|
+| **Rabin-Karp**       | Rolling hash for substring matching                  |
+| **Aho-Corasick**     | Multiple pattern string matching                     |
+| **Token Bucket**     | Rate-limiting over a sliding time window             |
+
+---
+
+###  Final Impact  
+The Sliding Window technique powers Gmail’s real-time spam detection and YouTube’s dynamic user engagement tracking. By focusing only on the **most recent and relevant** data, Google avoids performance bottlenecks while ensuring responsive, personalized experiences across its platforms.
+
+
 
 ---
 ## 📊 Business Case Studies
