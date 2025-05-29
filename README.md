@@ -609,7 +609,7 @@ Sliding windows also help detect bots:
 The Sliding Window technique powers Gmail’s real-time spam detection and YouTube’s dynamic user engagement tracking. By focusing only on the **most recent and relevant** data, Google avoids performance bottlenecks while ensuring responsive, personalized experiences across its platforms.
 
 ---
-##  📌 Case Study: Google Bigtable – Scalable Structured Data Storage
+##  📌 Case Study 13: Google Bigtable – Scalable Structured Data Storage
 
 ##  Problem Statement
 
@@ -737,11 +737,11 @@ It also inspired:
 - Amazon DynamoDB (inspired by similar principles)
 
 ---
-# 🧠 How Google Spanner Stores Data – Internals, Data Structures, and Algorithms
+# 📌 Case study 14 : How Google Spanner Stores Data – Internals, Data Structures, and Algorithms
 
----
 
-## 🧩 Overview of Data Storage in Spanner
+
+##  Overview of Data Storage in Spanner
 
 **Google Spanner** is a globally distributed SQL database that unifies:
 
@@ -752,9 +752,9 @@ It also inspired:
 
 It stores structured data using **automatic sharding**, **interleaved tables**, and **replicated tablets**, all while ensuring **strong consistency** and **global scalability**.
 
----
 
-## 📂 Physical Storage Structure
+
+##  Physical Storage Structure
 
 ### 1. Tablet and Split Architecture
 - Tables are automatically partitioned into **key ranges** known as **splits**.
@@ -767,35 +767,112 @@ It stores structured data using **automatic sharding**, **interleaved tables**, 
 - These directories are the unit of load balancing and movement across servers.
 - This method improves **locality** and simplifies re-sharding.
 
----
 
-## 🔧 Data Layout
+
+##  Data Layout
 
 ### Interleaved Table Storage
 - Tables can be **interleaved** within parent-child hierarchies.
 - Rows from a child table are stored **physically close** to their parent rows.
 - This reduces I/O and improves range query performance on related data.
 
----
 
-## 🧪 Algorithms Used in Spanner
 
-### 🔷 1. Paxos (Leader-Based Consensus)
+##  Algorithms Used in Spanner
+
+###  1. Paxos (Leader-Based Consensus)
 Used for:
 - Replication of write operations.
 - Leader election and coordination.
 - Ensuring all replicas agree on the same commit log.
 
-✅ Guarantees **one-copy equivalence**: the system behaves like a single-node database even though it is distributed.
+ Guarantees **one-copy equivalence**: the system behaves like a single-node database even though it is distributed.
 
----
 
-### 🔷 2. TrueTime API
+###  2. TrueTime API
 Used for:
 - Assigning globally consistent timestamps.
 - Preventing write-write conflicts across distributed replicas.
 
-TrueTime provides a **bounded uncertainty interval**:
+TrueTime provides a **bounded uncertainty interval**: TT.now() → [earliest, latest]
+Spanner **waits for the uncertainty window** to pass before committing transactions, ensuring **external consistency** (linearizability).
+
+
+
+###  3. MVCC (Multi-Version Concurrency Control)
+- Each write creates a **new version** of a row with a unique commit timestamp.
+- **Readers** can view a consistent snapshot without blocking writers.
+- **Writers** commit only at timestamps **after** all previously committed versions.
+
+
+###  4. B-Tree or LSM Tree Variants
+Internally used in tablets for:
+- Efficient **key-value lookups**.
+- Fast **range scans**.
+- High-throughput **inserts and deletes**.
+- **Compaction** to manage multiple versions and reduce storage bloat.
+
+
+###  5. Background Compaction Algorithms
+Spanner runs background processes to:
+- Merge older row versions.
+- Apply **garbage collection** to expired data.
+- Rebuild **indexes** where necessary.
+- Optimize read performance by reducing storage fragmentation.
+
+
+##  Life of a Write Operation
+
+1. A transaction starts on the client.
+2. Spanner assigns a **commit timestamp** using the TrueTime API.
+3. The **Paxos leader** for the tablet initiates replication to its followers.
+4. If a **quorum** (majority) acknowledges the write, it is considered committed.
+5. The write is stored in:
+   - **Write-ahead logs** for durability.
+   - **In-memory buffers**, then flushed to disk storage.
+
+
+##  Life of a Read Operation
+
+1. A client issues a read request, optionally specifying a timestamp (for snapshot consistency).
+2. If the read timestamp is earlier than the current **safe time** (from TrueTime), any replica can serve it.
+3. Otherwise, the **leader** serves the read.
+4. Spanner retrieves data using **MVCC** to construct a consistent snapshot based on the timestamp.
+
+
+
+##  Time and Space Complexity
+
+| Operation                  | Time Complexity     | Description                                      |
+|----------------------------|---------------------|--------------------------------------------------|
+| Write                      | O(log n)            | Due to index updates + Paxos logging             |
+| Read (Point Lookup)        | O(log n)            | B-Tree / LSM lookup                              |
+| Range Scan                 | O(k + log n)        | k = rows returned                                |
+| Paxos Replication          | O(R)                | R = number of replicas (3–5 typically)           |
+| Snapshot Reads (MVCC)      | O(1) per version    | Timestamp-based version selection                |
+| Space Complexity           | O(n)                | Includes data + version history + replication    |
+
+
+
+##  System Strengths
+
+| Feature               | Underlying Mechanism        | Benefit                                            |
+|-----------------------|-----------------------------|----------------------------------------------------|
+| Strong Consistency    | Paxos + TrueTime             | Ensures global linearizability                     |
+| High Availability     | Replication + Leader failover| Survives regional failures                         |
+| Non-Blocking Reads    | MVCC                         | Readers never wait on writers                      |
+| Fast Range Queries    | Interleaved tables + indexes | Efficient access to related rows                   |
+| Scalability           | Splits and tablets           | Seamless horizontal scaling                        |
+
+
+
+## 🧰 Real-World Applications within Google
+
+- **Google Ads**: Ensures accurate billing and auction metadata with strong consistency.
+- **Gmail**: Stores mailbox metadata like labels and threading.
+- **Google Cloud Platform (GCP)**: Offers Spanner as a service for enterprise applications.
+- **Google Photos & Play Store**: Use Spanner for consistent metadata access across the globe.
+
 
 ---
 ## 📊 Business Case Studies
