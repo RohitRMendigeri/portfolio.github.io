@@ -853,19 +853,9 @@ Spanner runs background processes to:
 
 
 
-##  System Strengths
-
-| Feature               | Underlying Mechanism        | Benefit                                            |
-|-----------------------|-----------------------------|----------------------------------------------------|
-| Strong Consistency    | Paxos + TrueTime             | Ensures global linearizability                     |
-| High Availability     | Replication + Leader failover| Survives regional failures                         |
-| Non-Blocking Reads    | MVCC                         | Readers never wait on writers                      |
-| Fast Range Queries    | Interleaved tables + indexes | Efficient access to related rows                   |
-| Scalability           | Splits and tablets           | Seamless horizontal scaling                        |
 
 
-
-##  Real-World Applications within Google
+##  Applications within Google
 
 - **Google Ads**: Ensures accurate billing and auction metadata with strong consistency.
 - **Gmail**: Stores mailbox metadata like labels and threading.
