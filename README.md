@@ -737,6 +737,67 @@ It also inspired:
 - Amazon DynamoDB (inspired by similar principles)
 
 ---
+# 🧠 How Google Spanner Stores Data – Internals, Data Structures, and Algorithms
+
+---
+
+## 🧩 Overview of Data Storage in Spanner
+
+**Google Spanner** is a globally distributed SQL database that unifies:
+
+- **Relational models** (tables, transactions)
+- **Distributed systems** (sharding, replication)
+- **Consensus protocols** (Paxos)
+- **Synchronized clocks** (TrueTime API)
+
+It stores structured data using **automatic sharding**, **interleaved tables**, and **replicated tablets**, all while ensuring **strong consistency** and **global scalability**.
+
+---
+
+## 📂 Physical Storage Structure
+
+### 1. Tablet and Split Architecture
+- Tables are automatically partitioned into **key ranges** known as **splits**.
+- Each split is managed by a **tablet**.
+- Tablets are distributed and **replicated** across 3–5 nodes.
+- Each tablet belongs to a **Paxos group** which handles replication and consistency.
+
+### 2. Directory-Based Sharding
+- Spanner groups rows by common **directory prefixes** in their primary keys.
+- These directories are the unit of load balancing and movement across servers.
+- This method improves **locality** and simplifies re-sharding.
+
+---
+
+## 🔧 Data Layout
+
+### Interleaved Table Storage
+- Tables can be **interleaved** within parent-child hierarchies.
+- Rows from a child table are stored **physically close** to their parent rows.
+- This reduces I/O and improves range query performance on related data.
+
+---
+
+## 🧪 Algorithms Used in Spanner
+
+### 🔷 1. Paxos (Leader-Based Consensus)
+Used for:
+- Replication of write operations.
+- Leader election and coordination.
+- Ensuring all replicas agree on the same commit log.
+
+✅ Guarantees **one-copy equivalence**: the system behaves like a single-node database even though it is distributed.
+
+---
+
+### 🔷 2. TrueTime API
+Used for:
+- Assigning globally consistent timestamps.
+- Preventing write-write conflicts across distributed replicas.
+
+TrueTime provides a **bounded uncertainty interval**:
+
+---
 ## 📊 Business Case Studies
 
 ### 1. 🚀 Improving Search Result Relevance
