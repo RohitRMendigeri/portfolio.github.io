@@ -665,18 +665,15 @@ This design supports:
 - Tablets contain SSTables + a memtable + metadata.
 
 ### 6. B+ Tree-Like Structure
-- Underlying mechanism in SSTables to support **fast range queries**.
-- Supports binary search on disk blocks.
-
-### 7. Chubby Lock Service
-- Used for **master election**, **tablet assignment**, and **metadata consistency**.
-- Ensures **consensus and synchronization** among nodes.
+- Underlying datastructure in SSTables to support **fast range queries**.
+-  Uses binary Search.
 
 
 
-## 🔄 Bigtable Workflow: Read/Write Operations
 
-### ✅ Write Path
+##  Bigtable Workflow: Read/Write Operations
+
+###  Write Path
 
 1. **Client sends a write** (put/delete).
 2. Write is recorded in the **Write-Ahead Log (WAL)**.
@@ -685,7 +682,7 @@ This design supports:
    - It's **flushed** to disk as an **SSTable**.
    - SSTables are stored in **GFS (Google File System)**.
 
-### 🔍 Read Path
+###  Read Path
 
 1. Client requests a key or key range.
 2. Bigtable checks:
@@ -696,7 +693,7 @@ This design supports:
 
 
 
-## 🔃 Compaction Process
+##  Compaction Process
 
 To maintain performance, Bigtable performs **compaction**:
 
@@ -708,7 +705,7 @@ This keeps read paths efficient by reducing the number of SSTables per tablet.
 
 
 
-## 🧮 Time and Space Complexity
+##  Time  Complexity
 
 | Operation         | Time Complexity      | Notes                                    |
 |-------------------|----------------------|-------------------------------------------|
@@ -716,7 +713,7 @@ This keeps read paths efficient by reducing the number of SSTables per tablet.
 | **Read (lookup)** | O(log n + k)         | Log n for SSTable + k for merging versions |
 | **Range Scan**    | O(k)                 | Efficient due to SSTable sorting          |
 | **Compaction**    | O(n)                 | Depends on size of SSTables being merged  |
-| **Space**         | Efficient            | Uses compaction, Bloom filters, and compression |
+
 
 
 
@@ -841,7 +838,7 @@ Spanner runs background processes to:
 
 
 
-##  Time and Space Complexity
+##  Time Complexity
 
 | Operation                  | Time Complexity     | Description                                      |
 |----------------------------|---------------------|--------------------------------------------------|
@@ -850,6 +847,8 @@ Spanner runs background processes to:
 | Range Scan                 | O(k + log n)        | k = rows returned                                |
 | Paxos Replication          | O(R)                | R = number of replicas (3–5 typically)           |
 | Snapshot Reads (MVCC)      | O(1) per version    | Timestamp-based version selection                |
+
+
 | Space Complexity           | O(n)                | Includes data + version history + replication    |
 
 
