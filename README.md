@@ -709,7 +709,7 @@ This keeps read paths efficient by reducing the number of SSTables per tablet.
 
 | Operation         | Time Complexity      | Notes                                    |
 |-------------------|----------------------|-------------------------------------------|
-| **Write**         | Amortized O(1)       | Buffered in memtable                      |
+| **Write**         |  O(1)                | Buffered in memtable                      |
 | **Read (lookup)** | O(log n + k)         | Log n for SSTable + k for merging versions |
 | **Range Scan**    | O(k)                 | Efficient due to SSTable sorting          |
 | **Compaction**    | O(n)                 | Depends on size of SSTables being merged  |
@@ -849,7 +849,7 @@ Spanner runs background processes to:
 | Snapshot Reads (MVCC)      | O(1) per version    | Timestamp-based version selection                |
 
 
-| Space Complexity           | O(n)                | Includes data + version history + replication    |
+ Space Complexity   : O(n)   : Includes data + version history + replication   
 
 
 
