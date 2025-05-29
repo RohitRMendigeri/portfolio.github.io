@@ -720,7 +720,7 @@ This keeps read paths efficient by reducing the number of SSTables per tablet.
 
 
 
-## 🧰 Use in Google's Ecosystem
+##  Use in Google's Ecosystem
 
 Bigtable is used in:
 
@@ -866,7 +866,7 @@ Spanner runs background processes to:
 
 
 
-## 🧰 Real-World Applications within Google
+##  Real-World Applications within Google
 
 - **Google Ads**: Ensures accurate billing and auction metadata with strong consistency.
 - **Gmail**: Stores mailbox metadata like labels and threading.
