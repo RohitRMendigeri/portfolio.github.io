@@ -173,43 +173,87 @@ In practice, **A\*** performs significantly faster due to the heuristic narrowin
 -  **Logistics/Delivery**: Optimized paths for time-sensitive delivery.
 
 ---
-## 📌 Case Study 3: KD-Trees for Location-Based Search at Google
+# 📌Case Study 3: KD-Trees for Location-Based Search at Google
 
-###  Challenge in Real-Time Systems  
-Quickly finding the nearest locations (e.g., businesses, data centers, delivery points) based on a user's current position.
+### Challenge in Real-Time Systems  
+Rapidly finding the nearest points of interest—such as businesses, data centers, or delivery hubs—based on a user’s current position. In large-scale, high-traffic environments, latency is critical: users expect sub-second responses for “find nearby” queries.
 
-###  Solution Overview: Using KD-Tree (K-Dimensional Tree)  
-A **KD-Tree** is a space-partitioning data structure used to organize points in a K-dimensional space (e.g., latitude and longitude for K=2). It enables efficient **nearest-neighbor** and **range queries** — perfect for location-aware services.
 
--  **Maps:** Find nearby places like ATMs, cafés, or gas stations.  
--  **Delivery/Logistics:** Assign nearest delivery partners.  
--  **Cloud Infrastructure:** Locate closest servers or CDN nodes for users.
+### Solution Overview: Using KD-Tree (K-Dimensional Tree)  
+A **KD-Tree** is a binary space-partitioning structure that organizes points in a K-dimensional space (e.g., latitude and longitude when K = 2). By recursively splitting the dataset along alternating dimensions, KD-Trees enable efficient nearest-neighbor and range queries, making them ideal for real-time, location‐aware services.
 
-###  Data Structures Used  
-- **KD-Tree:** For organizing geo-locations in K-dimensional space.  
-- **Max Heap:** To maintain top-K closest locations during queries.  
+- **Maps & Local Search:**  
+  Quickly locate nearby ATMs, restaurants, or gas stations using the user’s GPS coordinates.
 
-###  Algorithm – K-Dimensional Search (e.g., K = 2 for lat/lon)  
-1. **Build:** Recursively split points by cycling through K dimensions (e.g., lat → lon → lat…).  
-2. **Query:** Compare user location across K axes; traverse and backtrack if needed.  
-3. **Track:** Use Max Heap to maintain top-K nearest neighbors.
+- **Delivery & Logistics:**  
+  Assign the closest available driver or courier to a pickup point, minimizing travel time and cost.
 
-###  Time & Space Complexity  
+- **Cloud Infrastructure & CDNs:**  
+  Route user requests to the geographically nearest data center or edge server, reducing latency.
 
-| Operation         | Time Complexity | Space Complexity |
-|-------------------|------------------|------------------|
-| Build Tree        | O(N log N)       | O(N)             |
-| Nearest Neighbor  | O(log N) avg     | O(K)             |
 
-*Where:*  
-- N = number of locations, K = number of dimensions (e.g., 2 for lat/lon)
+### Data Structures Employed  
+- **KD-Tree**  
+  - Organizes N geo-points (e.g., `[lat, lon]`) in a balanced binary tree.  
+  - Each node splits its subset of points along one dimension (cycling through latitude, longitude, latitude, …).  
+  - Enables average-case \(O(\log N)\) nearest-neighbor queries.
 
-###  Usage 
--  **Maps & Search:** Find nearby POIs based on GPS.  
--  **Logistics:** Match users with nearest drivers.  
--  **CDNs & Edge Networks:** Route traffic to the closest server node.
+- **Max Heap (Priority Queue)**  
+  - Maintains the top-K closest points when performing a K nearest-neighbors (KNN) search.  
+  - As the KD-Tree search descends, any candidate farther than the current Kth nearest is pruned.
 
-KD-Trees enable **real-time**, **location-aware intelligence** — crucial for enhancing user experience in mapping, search, and cloud systems.
+
+
+### Algorithm: K-Dimensional Search (K = 2 for latitude/longitude)  
+1. **Build Phase** (\(O(N \log N)\), \(O(N)\) space)  
+   - Recursively select a splitting dimension (alternating between latitude and longitude).  
+   - Sort or compute the median of points along that dimension.  
+   - Create a node storing the median point; recurse on left/right subsets.
+
+2. **Query Phase** (Average \(O(\log N)\))  
+   - Start at the root, comparing the target point’s coordinate in the current split dimension.  
+   - Recursively traverse toward the subtree that contains the target.  
+   - Upon backtracking, check whether the “other side” of the split could contain closer points—prune if the splitting plane is farther than our current Kth nearest.  
+   - Use a Max Heap to track the top-K closest points seen so far.  
+
+3. **Result Collection** (\(O(K)\) extra space)  
+   - After traversal, extract the K nearest points from the Max Heap in descending order of distance (or read them inwards if maintaining a size-K min-heap instead).
+
+
+
+### Time & Space Complexity  
+
+| Operation          | Time Complexity    | Space Complexity |
+|--------------------|--------------------|------------------|
+| Build (bulk insert)| \(O(N \log N)\)    | \(O(N)\)         |
+| Nearest Neighbor   | \(O(\log N)\) avg  | \(O(K)\)         |
+| Range Query        | \(O(\log N + R)\)  | \(O(R)\)         |
+
+- **N** = total number of locations  
+- **K** = dimensions (e.g., 2 for lat/lon)  
+- **R** = number of reported points in a range query
+
+
+
+### Kd can be used in 
+
+1. **Maps & Local Search**  
+   - **“Find nearby cafés”**:  
+     - User’s GPS = `[lat₀, lon₀]`.  
+     - Query a KD-Tree of millions of POIs to return the closest 10 eateries in under 50 ms.
+
+
+3. **CDN & Edge Routing**  
+   - **“Route user traffic”**:  
+     - Predefine server locations (data centers, edge nodes) in a static KD-Tree.  
+     - For each incoming request, map its IP to geolocation and perform a KD-Tree lookup to identify the nearest node, reducing round-trip latency.
+
+4. **High-Dimensional ML Pipelines **  
+   - we can also build KD-Trees over high-dimensional feature vectors to accelerate KNN-based recommendations or clustering tasks. 
+
+---
+
+
 
 
 ---
