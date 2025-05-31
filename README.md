@@ -564,7 +564,7 @@ It can be a time-based sliding window, like rate limiting or the Token Bucket me
 
 ###  In YouTube: Engagement and Anomaly Detection
 
-#### 1. **Watch-Time Analysis**  
+#### **Watch-Time Analysis**  
 YouTube tracks where users **stop watching** a video. A sliding window moves through time-stamped engagement logs:
 - If many users drop off between `00:45`–`01:15`, this part is flagged as potentially boring or irrelevant.
 - Creators get feedback based on **aggregated sliding windows**, allowing them to improve content pacing.
@@ -581,19 +581,6 @@ YouTube can use a sliding window approach to analyze real-time data during a liv
 - Deciding the optimal time to display ads, based on viewer engagement patterns.
 
 By continuously calculating these metrics within a sliding time window, YouTube can make smarter, data-driven decisions in real time.
-
-#### 2. **Suspicious Behavior Detection**  
-Sliding windows also help detect bots:
-- If an account likes/comments on hundreds of videos in a short span, it's flagged using a **behavioral sliding window**.
-- Similar to Gmail’s usage, but with a focus on action frequency in **video sessions**.
-
-
-
-###  Uses Cases Sliding Windows
-
-- **Google Trends**: Detects search bursts within moving 5-minute or 1-hour windows.
-- **Google Safe Browsing**: Monitors URL visit frequency in short windows to assess phishing threats.
-
 
 
 ###  Algorithmic Details
