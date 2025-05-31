@@ -84,7 +84,6 @@ A **Trie** is a tree-like data structure ideal for **prefix-based lookup**. Each
 
 ###  Token Management in AI Models
 In today’s world, AI is used widely across various applications. Large language models like GPT (e.g., Gemini or ChatGPT) rely on tokens to understand and maintain the context of a conversation.
-A Trie (prefix tree) can be extremely useful in this scenario. It can efficiently store, process, and retrieve tokens, making it ideal for managing vocabulary, autocomplete, and fast lookup operations—especially when dealing with large sets of tokenized data.
 
 A Trie can be extremely useful in this scenario. It can efficiently store, process, and retrieve tokens, making it ideal for managing vocabulary, autocomplete, and fast lookup operations—especially when dealing with large sets of tokenized data. These tokens are then further used in transformers ,etc.
 
