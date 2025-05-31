@@ -68,7 +68,6 @@ A **Trie** is a tree-like data structure ideal for **prefix-based lookup**. Each
 - **Binary Trie:** Each node represents 0 or 1, ideal for IP address prefixes (Routing).
 
 
-
 ###  Algorithms  
 
 ####  Autocomplete  
@@ -82,6 +81,12 @@ A **Trie** is a tree-like data structure ideal for **prefix-based lookup**. Each
 1. Insert IP prefixes (e.g., `192.168.0.0/16`) into a binary Trie.  
 2. Convert destination IP addresses to binary form and perform the **longest prefix match** to determine the next hop.
 
+
+###  Token Management in AI Models
+In today’s world, AI is used widely across various applications. Large language models like GPT (e.g., Gemini or ChatGPT) rely on tokens to understand and maintain the context of a conversation.
+A Trie (prefix tree) can be extremely useful in this scenario. It can efficiently store, process, and retrieve tokens, making it ideal for managing vocabulary, autocomplete, and fast lookup operations—especially when dealing with large sets of tokenized data.
+
+A Trie can be extremely useful in this scenario. It can efficiently store, process, and retrieve tokens, making it ideal for managing vocabulary, autocomplete, and fast lookup operations—especially when dealing with large sets of tokenized data. These tokens are then further used in transformers ,etc.
 
 
 ###  Time & Space Complexity
@@ -134,7 +139,7 @@ We can use **informed heuristics** that are both fast and realistic:
 -  **Time-of-day effects** — rush hour patterns, school zones.
 -  **Dynamic closures & incidents** — makes some edges temporarily unusable.
 
-These heuristics help guide the search efficiently while adapting to **real-world constraints**.
+These heuristics can help guiding the search efficiently while adapting to **real-world constraints**.
 
 
 ###  Handling Dynamic Edge Weights
