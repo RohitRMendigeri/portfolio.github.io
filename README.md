@@ -554,21 +554,33 @@ Sliding Window is a technique where a **subset of data** (the "window") is analy
 
 #### 1. **Spam Phrase Detection**  
 A window slides over email content to detect repeated suspicious phrases. This is often combined with:
-- **Rabin-Karp Algorithm**: Uses a rolling hash (sliding window of characters) to match known spam patterns.
+- **Rabin-Karp Algorithm**: Uses a rolling hash (sliding window of characters) to match known spam patterns(words sentences).
 - **Aho-Corasick Algorithm**: For multi-pattern matching, speeding up detection of multiple blacklisted phrases in a single scan.
 
 #### 2. **Sender Behavior Monitoring**  
-Gmail monitors how many emails a user sends within a time window. If a user sends, say, 50 emails in 30 seconds, they might be flagged for spam.
+Gmail can monitor how many emails a user sends, and if it exceeds a certain threshold, the user and their emails may be flagged for further review.
 
-This uses a **time-based sliding window**, similar in spirit to **rate limiting** and the **Token Bucket algorithm** — allowing Gmail to detect bursts without over-blocking occasional peaks.
-
+It can be a time-based sliding window, like rate limiting or the Token Bucket method, to help Gmail detect sudden bursts of activity without blocking normal short-term spikes.
 
 ###  In YouTube: Engagement and Anomaly Detection
 
-#### 1. **Watch-Time Drop-Off Analysis**  
+#### 1. **Watch-Time Analysis**  
 YouTube tracks where users **stop watching** a video. A sliding window moves through time-stamped engagement logs:
-- If many users drop off between `00:45`–`01:15`, this chunk is flagged as potentially boring or irrelevant.
+- If many users drop off between `00:45`–`01:15`, this part is flagged as potentially boring or irrelevant.
 - Creators get feedback based on **aggregated sliding windows**, allowing them to improve content pacing.
+
+YouTube can use a sliding window approach to analyze real-time data during a live stream. This can help in:
+- Identifying the timestamp of peak viewership during a live stream.
+
+- Detecting spikes in subscriber growth over time.
+
+- Tracking when the most viewers liked and subscribed to the channel.
+
+- Analyzing the frequency of interactions to gain deeper insights into user behavior.
+
+- Deciding the optimal time to display ads, based on viewer engagement patterns.
+
+By continuously calculating these metrics within a sliding time window, YouTube can make smarter, data-driven decisions in real time.
 
 #### 2. **Suspicious Behavior Detection**  
 Sliding windows also help detect bots:
