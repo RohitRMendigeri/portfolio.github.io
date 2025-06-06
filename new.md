@@ -46,7 +46,10 @@ It operates under its parent company **Alphabet Inc.**, which houses a diverse s
 Google embodies innovation, scale, and impact. Its engineering culture encourages experimentation and excellence, making it the ideal environment for someone like me who loves building intelligent systems and solving large-scale problems. Through this portfolio, I aim to demonstrate how my technical skills align with the challenges faced in various Google products.
 
 ---
-## 📌 Case Study 1:  trie Powers in Google Systems
+## 📌 Case Study :  
+gemini chat model : there are alot of sub modules which takes place in gemini chat model , 
+## first module : 
+tokenisation : when a user promts somethig it get broken into the tokens then 
 
 
 
