@@ -47,9 +47,80 @@ Google embodies innovation, scale, and impact. Its engineering culture encourage
 
 ---
 ## 📌 Case Study :  
-gemini chat model : there are alot of sub modules which takes place in gemini chat model , 
-## first module : 
-tokenisation : when a user promts somethig it get broken into the tokens then 
+ # GPU Allocation in a Colab-Style Environment
+
+A very simple scheduler matches user requests (Free, Pro, Pro+) to available GPUs (K80, T4, V100, A100) using:
+
+1. Two priority queues (High and Low)  
+2. A sorted list of idle GPUs  
+3. A “best-fit” rule to pick the smallest GPU that meets each user’s need
+
+---
+
+## 1. Queues and GPU List
+
+### 1.1. High-Priority Queue (`HEAP_HIGH`)
+- Holds only **Pro+** users  
+- Ordered by the time they requested a GPU (earliest first)  
+- Each entry contains:
+  - `user_id`  
+  - `min_gpu_rank` (1=small job, 2=medium, 3=large)  
+  - `arrival_time`  
+
+### 1.2. Low-Priority Queue (`HEAP_LOW`)
+- Holds **Pro** and **Free** users  
+- Within this queue, Pro users go before Free users; among the same type, earlier requests go first  
+- Each entry contains:
+  - `user_id`  
+  - `min_gpu_rank` (1=small, 2=medium, 3=large)  
+  - `arrival_time`  
+
+### 1.3. Idle GPUs List (`IDLE_LIST`)
+- A list of all currently free GPUs, **sorted from lowest to highest rank**:
+  1. K80 → rank 1  
+  2. T4  → rank 2  
+  3. V100 → rank 3  
+  4. A100 → rank 4  
+- Each entry shows:
+  - `gpu_id`  
+  - `gpu_type`  
+  - `rank`  
+
+---
+
+## 2. How It Works
+
+### 2.1. When a User Requests a GPU
+1. User clicks **“Enable GPU.”**  
+2. Collect the user’s:
+   - `user_id`  
+   - `tier` (Free / Pro / Pro+)  
+   - `job_size` (small / medium / large)  
+   - `arrival_time` (timestamp)  
+3. Decide `min_gpu_rank` based on `job_size`:
+   - small → 1  
+   - medium → 2  
+   - large → 3  
+4. Put the request into:
+   - **`HEAP_HIGH`** if the user is **Pro+**  
+   - **`HEAP_LOW`** if the user is **Pro** or **Free** (Pro before Free)  
+5. Show the user: “Waiting for GPU.”
+
+### 2.2. When a GPU Becomes Free
+1. Add the freed GPU into `IDLE_LIST` in the correct spot so it stays sorted by rank.  
+2. Decide which queue to take from:
+   - If `HEAP_HIGH` is not empty, pop its earliest entry.  
+   - Otherwise, pop the earliest entry from `HEAP_LOW`.  
+   - If both are empty, stop (no one is waiting).  
+3. Take the popped request’s `min_gpu_rank` and scan `IDLE_LIST` from lowest rank to highest:
+   - As soon as you find a GPU whose rank ≥ `min_gpu_rank`, assign that GPU to the user and remove it from `IDLE_LIST`.  
+   - If you reach the end without finding a match (all ranks are too low), put the request back into its original queue.  
+4. Repeat whenever another GPU opens up or a new request arrives.
+
+---
+
+**End of Document**  
+
 
 
 
