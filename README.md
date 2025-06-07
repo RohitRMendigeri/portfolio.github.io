@@ -148,18 +148,6 @@ We can use **informed heuristics** that are both fast and realistic:
 
 These heuristics can help guiding the search efficiently while adapting to **real-world constraints**.
 
-
-###  Handling Dynamic Edge Weights
-
-Real-world roads aren't static:
-
-- **Live edge weight updates** for changing travel times (traffic).
-- **Edge pruning** for closed or under-construction roads.
-- **Replanning on-the-fly** using updated graph data.
-
-A* allows quick rerouting by recalculating the optimal path from the current node when conditions change — this is critical for **live navigation**.
-
-
 ###  Time and Space Complexity
 
 | Operation         | Complexity         |
@@ -173,12 +161,6 @@ A* allows quick rerouting by recalculating the optimal path from the current nod
 In practice, **A\*** performs significantly faster due to the heuristic narrowing the search area.
 
 
-
-###   Usage
-
--  **Google Maps**: Live route planning, rerouting  updates.
--  **Ride-sharing platforms** (e.g., Uber, Lyft): Smart driver dispatch and route prediction.
--  **Logistics/Delivery**: Optimized paths for time-sensitive delivery.
 
 ---
 # 📌Accelerating Location-Based Search
