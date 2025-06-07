@@ -46,67 +46,75 @@ It operates under its parent company **Alphabet Inc.**, which houses a diverse s
 Google embodies innovation, scale, and impact. Its engineering culture encourages experimentation and excellence, making it the ideal environment for someone like me who loves building intelligent systems and solving large-scale problems. Through this portfolio, I aim to demonstrate how my technical skills align with the challenges faced in various Google products.
 
 ---
-## 📌 Case Study 1: Powering Search Suggestions and High-Speed Routing
+# 📌 Case Study 1: Search Autocomplete & IP Routing with Trie
 
-###  Challenges in Real-Time Systems  
-Systems like Google Search and Google DNS must handle massive-scale data with **low latency**, **high accuracy**, and **scalability**. The core challenge is to find the best match for a given prefix—quickly and efficiently.
+##  Real-Time Challenges  
+Systems like **Google Search**, **YouTube**, and **Google DNS** must provide:  
+- **Low-latency responses**  
+- **High accuracy**  
+- **Scalable prefix-based lookups**  
 
-
-
-###  Solution Overview: Using Trie (Prefix Tree)  
-A **Trie** is a tree-like data structure ideal for **prefix-based lookup**. Each node represents a character (or bit), and paths from the root form complete strings or IP prefixes. Tries power:
-
--  **Autocomplete systems:** Predicting user search queries.  
--  **IP routing systems:** Matching IP addresses to the longest prefix route.
+The underlying challenge: **Quickly matching input prefixes to known queries or routes.**
 
 
 
-###  Data Structures Used  
-- **Trie:** For efficient prefix matching.  
-- **Hash Map:** To store query frequencies (Autocomplete).  
-- **Min Heap / Priority Queue:** To rank top-K suggestions (Autocomplete).  
-- **Binary Trie:** Each node represents 0 or 1, ideal for IP address prefixes (Routing).
+##  Core Data Structures
+
+| Use Case          | Data Structure        | Purpose                            |
+|------------------|----------------------|-------------------------------------|
+| Search           | Trie (Prefix Tree)   | Fast lookup of user query prefixes |
+| IP Routing       | Binary Trie (0/1)    | Match IPs to longest prefix route  |
+| Ranking Results  | Min Heap / PriorityQ | Top-K search suggestions           |
+| Frequency Count  | Hash Map             | Store query popularity             |
 
 
-###  Algorithms  
 
-####  Autocomplete  
-1. Insert queries into the Trie along with frequency counts.  
-2. For a given prefix input:  
-   - Traverse to the corresponding prefix node.  
-   - Perform DFS to collect all possible suffixes.  
-   - Use a Min Heap to efficiently extract top-K frequent suggestions.
+##  Algorithm: Search Autocomplete  
 
-####  IP Routing  
-1. Insert IP prefixes (e.g., `192.168.0.0/16`) into a binary Trie.  
-2. Convert destination IP addresses to binary form and perform the **longest prefix match** to determine the next hop.
+1. **Insert Queries:**
+   - Store user queries into a Trie.
+   - Track frequency using a Hash Map.
 
-
-###  Token Management in AI Models
-In today’s world, AI is used widely across various applications. Large language models like GPT (e.g., Gemini or ChatGPT) rely on tokens to understand and maintain the context of a conversation.
-
-A Trie can be extremely useful in this scenario. It can efficiently store, process, and retrieve tokens, making it ideal for managing vocabulary, autocomplete, and fast lookup operations—especially when dealing with large sets of tokenized data. These tokens are then further used in transformers ,etc.
+2. **Suggest Completions:**
+   - Traverse Trie using input prefix.
+   - Use DFS to collect possible completions.
+   - Rank top-K suggestions via Min Heap.
 
 
-###  Time & Space Complexity
+##  Algorithm: IP Routing  
 
-| Operation            | Time Complexity        | Space Complexity       |
-|----------------------|------------------------|-----------------------|
-| Insert Queries/Routes | O(N × L) or O(R × 32)  | O(N × L) or O(R × 32) |
-| Prefix Lookup        | O(P) or O(32)          | O(K) (for suggestions)|
-| Suggestion Retrieval | O(M log K)             | —                     |
+1. **Insert Routes:**
+   - Convert IP prefixes (e.g., `192.168.0.0/16`) into binary.
+   - Insert into a Binary Trie, marking next-hop details.
 
-*Where:*  
-- N = number of queries, L = average length of query  
-- R = number of routes, P = prefix length, K = number of suggestions, M = total characters in matched suffixes
-- 32 = shows the bits in IPV4
+2. **Lookup IP Address:**
+   - Convert IP address to binary.
+   - Traverse Trie to find **longest prefix match**.
 
 
-###  Real-World Usage at Google  
+
+##  Time & Space Complexity
+
+| Operation              | Time Complexity       | Space Complexity         |
+|------------------------|-----------------------|--------------------------|
+| Insert Query/Route     | O(N × L) / O(R × 32)  | O(N × L) / O(R × 32)     |
+| Prefix Match (Search)  | O(P)                  | O(K) (Top-K suggestions) |
+| Prefix Match (Routing) | O(32) (IPv4 fixed)    | —                        |
+| Suggestion Retrieval   | O(M log K)            | —                        |
+
+> - N = number of queries  
+> - L = average query length  
+> - R = number of routes  
+> - P = input prefix length  
+> - M = total suffixes  
+> - K = number of suggestions
+
+
 -  **Autocomplete:** Google Search, Gmail, YouTube, Android Keyboard  
--   **Routing:** Google Public DNS (8.8.8.8), Content Delivery Networks (CDNs), and Google’s global server infrastructure
+-  **Routing:** Google DNS (8.8.8.8), CDNs, Cloud Routers  
 
-Tries enable both **intelligent suggestions** and **high-speed routing**, making them essential for building responsive, scalable, and efficient systems.
+ **Tries allow scalable and intelligent systems that feel instantaneous to the user.**
+
 
 ---
 ## 📌 Case Study 2: Route Optimization for Google Maps Navigation
@@ -429,7 +437,90 @@ Running each query separately can be slow—especially on large datasets with ti
 Mo’s Algorithm shines when we know all queries upfront and want **speed without full recomputation**—perfect for **batch reporting** and **offline analytics**.
 
 ---
-## 📌 Case Study 8: Achieving Stable and Fair Matching in Resource Allocation( Deferred Acceptance Algorithm)
+# 📌 Case Study 8: Efficient Tokenization in Large AI Models
+
+##   AI Context Management Problem  
+Large language models (LLMs) like **ChatGPT** and **Gemini** operate on **tokens** (sub-word units). The system must:  
+- Map input text to tokens efficiently  
+- Handle **millions of vocabulary entries**  
+- Do so with **minimal latency** during inference  
+
+---
+
+## 🧠 Core Data Structures
+
+| Component         | Data Structure | Purpose                                |
+|------------------|----------------|----------------------------------------|
+| Vocabulary Store | Trie           | Fast prefix-based token matching       |
+| Token Lookup     | Hash Map       | Mapping tokens to IDs/embeddings       |
+
+---
+
+## ⚙️ Tokenization Algorithm
+
+1. **Preprocess:**
+   - Use subword tokenization (e.g., **Byte Pair Encoding**, **WordPiece**)
+   - Store vocabulary in a Trie
+
+2. **Tokenize Input:**
+   - Read input string character-by-character
+   - Match the **longest prefix** in the Trie
+   - Convert to corresponding token ID (via hash map or array)
+
+---
+
+## ⏱ Time & Space Complexity
+
+| Operation            | Time Complexity | Space Complexity   |
+|----------------------|------------------|--------------------|
+| Insert Vocabulary    | O(N × L)         | O(N × L)           |
+| Token Lookup         | O(P)             | —                  |
+
+> - N = number of tokens  
+> - L = average token length  
+> - P = prefix length in input string  
+
+---
+
+## Managing the Context Window: Using a Ring Buffer
+
+Transformers like those in **Gemini** or **ChatGPT** operate within a **fixed-size context window** (e.g., 8,192 tokens). This means:
+- Oldest tokens must be discarded once the limit is reached
+- Context must be efficiently updated without full reprocessing
+
+###  Solution: Ring Buffer (Circular Buffer)
+
+A **ring buffer** allows:
+- **O(1)** insertion and removal of tokens
+- Efficient memory reuse (no shifting required)
+- Seamless sliding of the context window as conversation grows
+
+#### How it works:
+1. The buffer holds the last *N* tokens (where *N* is the context limit).
+2. As new tokens are generated or input, they **overwrite** the oldest ones.
+3. This structure is ideal for **chatbots**, where ongoing conversation history must be preserved up to a limit.
+
+| Feature               | Benefit                          |
+|-----------------------|----------------------------------|
+| Fixed-size memory     | Prevents overflows               |
+| Fast overwrite        | O(1) token replacement           |
+| Constant time access  | Efficient for real-time updates  |
+
+---
+
+##  Real-World Usage
+
+-  **LLMs** (ChatGPT, Gemini, Claude)  
+-  **Tokenizers** (BPE, Unigram, WordPiece)  
+-  **Context Tracking:** Efficient sliding window using ring buffer  
+-  **Real-time inference pipelines**
+
+ **Combining Trie for tokenization and Ring Buffer for context control enables scalable, high-performance AI systems.**
+
+
+
+---
+## 📌 Case Study 9: Achieving Stable and Fair Matching in Resource Allocation( Deferred Acceptance Algorithm)
 
 ### Challenge  
 Efficiently pair two groups based on mutual preferences, ensuring **no two entities would prefer to deviate from their assigned match**—i.e., no instability.
@@ -465,7 +556,7 @@ This classic algorithm finds a **stable matching** in O(n²) time:
 Stable Marriage is a powerful abstraction for **fair, stable, and preference-driven assignments** across diverse use cases.
 
 ---
-## 📌 Case Study 9: Finding the Optimal Path in Cost-Sensitive Systems
+## 📌 Case Study 10: Finding the Optimal Path in Cost-Sensitive Systems
 
 ### Challenge  
 Efficiently finding the lowest-cost path or optimal solution in large-scale graphs with varying edge costs, such as optimizing network routing or task scheduling in Google’s infrastructure.
@@ -505,7 +596,7 @@ UCS is a graph search algorithm that always expands the node with the smallest c
 Uniform Cost Search enables **optimal, cost-aware decision making** across Google’s large-scale, weighted graph problems, especially where multiple potential goals exist.
 
 ---
-## 📌 Case Study 10: A Foundation for Security: Enabling Cryptography and Data Integrity
+## 📌 Case Study 11: A Foundation for Security: Enabling Cryptography and Data Integrity
 
 ### Challenge  
 Google requires **efficient modular arithmetic** operations for cryptography, data integrity, and distributed systems, where modular division is needed but direct division is not possible.
@@ -547,7 +638,7 @@ Common methods to compute MMI:
 MMI is a fundamental building block enabling **secure, efficient, and reliable modular arithmetic** in Google's large-scale systems.
 
 ---
-## 📌 Case Study 11:  Powering Scalable, Low-Latency Access to Ordered Data
+## 📌 Case Study 12:  Powering Scalable, Low-Latency Access to Ordered Data
 
 ### Challenge  
 Google services need to manage **large, dynamic datasets** with fast search, insertion, and deletion operations while maintaining sorted order and supporting range queries. Traditional balanced trees can be complex to implement and maintain at scale.
@@ -581,7 +672,7 @@ A **Skip List** is a layered, probabilistic data structure that enables **fast a
 Skip Lists offer a simpler and more concurrent-friendly alternative to balanced trees, making them ideal for Google’s need to handle massive, ordered data efficiently and reliably.
 
 ---
-## 📌 Case Study 12: Real-Time Spam Detection in Gmail 
+## 📌 Case Study 13: Real-Time Spam Detection in Gmail 
 
 ##  The Challenge  
 Gmail must detect spam **immediately** upon email arrival. With billions of emails sent daily, reprocessing entire datasets is too expensive.  
@@ -629,7 +720,7 @@ This approach enables **real-time spam filtering** without overloading Gmail’s
 
 
 ---
-## Case Study 13: Enhancing Android App Update Integrity with Merkle Trees
+## Case Study 14: Enhancing Android App Update Integrity with Merkle Trees
 
 
 Google Play Store delivers large-scale app updates (APKs/AABs) to billions of Android devices. Ensuring **security**, **efficiency**, and **data integrity**—especially on unreliable networks or against tampered APKs—is crucial.
@@ -691,7 +782,7 @@ By integrating Merkle Trees more deeply with delta update mechanisms, Google can
 - Catch **any unauthorized modifications**, even if a single byte is altered
 
 ---
-## 📌 Case Study 14: Live Engagement Analytics in YouTube using Sliding Window
+## 📌 Case Study 15: Live Engagement Analytics in YouTube using Sliding Window
 
 ##  The Challenge  
 YouTube receives massive user engagement data every second. We need to process these streams in **real time** to support:
