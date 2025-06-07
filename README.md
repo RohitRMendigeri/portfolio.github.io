@@ -587,7 +587,7 @@ Skip Lists offer a simpler and more concurrent-friendly alternative to balanced 
 Gmail must detect spam **immediately** upon email arrival. With billions of emails sent daily, reprocessing entire datasets is too expensive.  
 We need an efficient method to extract insights from **continuous data streams**.
 
-## Suggested Solution: Sliding Window Algorithm  
+##  Solution: Sliding Window Algorithm  
 The **Sliding Window** technique allows us to process only the **most recent subset** of data efficiently.
 
 -  **Time Efficiency**: Only new data is processed as the window slides.  
@@ -698,7 +698,7 @@ YouTube receives massive user engagement data every second. We need to process t
 -  Peak interaction tracking  
 -  Ad placement optimization  
 
-##  Suggested Solution: Sliding Window for Streaming Analytics  
+##   Solution: Sliding Window for Streaming Analytics  
 By continuously moving a time window across live data, we can extract insights with minimal overhead.
 
 -  **Real-time feedback**  
