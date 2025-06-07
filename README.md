@@ -46,7 +46,7 @@ It operates under its parent company **Alphabet Inc.**, which houses a diverse s
 Google embodies innovation, scale, and impact. Its engineering culture encourages experimentation and excellence, making it the ideal environment for someone like me who loves building intelligent systems and solving large-scale problems. Through this portfolio, I aim to demonstrate how my technical skills align with the challenges faced in various Google products.
 
 ---
-## 📌 Case Study 1:  trie Powers in Google Systems
+## 📌 Case Study 1: Powering Search Suggestions and High-Speed Routing
 
 ###  Challenges in Real-Time Systems  
 Systems like Google Search and Google DNS must handle massive-scale data with **low latency**, **high accuracy**, and **scalability**. The core challenge is to find the best match for a given prefix—quickly and efficiently.
@@ -109,7 +109,7 @@ A Trie can be extremely useful in this scenario. It can efficiently store, proce
 Tries enable both **intelligent suggestions** and **high-speed routing**, making them essential for building responsive, scalable, and efficient systems.
 
 ---
-## 📌 Case Study 2: How A* Search Optimizes Google Maps Navigation
+## 📌 Case Study 2: Route Optimization for Google Maps Navigation
 
 ###  Challenge
 Google Maps needs to compute **shortest and fastest routes** from millions of locations in real-time. The challenge lies in handling **dynamic road conditions** like traffic, closures, construction, and accidents — all while keeping routing **fast and accurate**.
@@ -173,7 +173,7 @@ In practice, **A\*** performs significantly faster due to the heuristic narrowin
 -  **Logistics/Delivery**: Optimized paths for time-sensitive delivery.
 
 ---
-# 📌Case Study 3: KD-Trees for Location-Based Search at Google
+# 📌Accelerating Location-Based Search
 
 ### Challenge in Real-Time Systems  
 Rapidly finding the nearest points of interest—such as businesses, data centers, or delivery hubs—based on a user’s current position. In large-scale, high-traffic environments, latency is critical: users expect sub-second responses for “find nearby” queries.
@@ -257,7 +257,7 @@ A **KD-Tree** is a binary space-partitioning structure that organizes points in 
 
 
 ---
-## 📌 Case Study 4: Huffman Encoding for Efficient Data Compression at Google
+## 📌 Case Study 4: Optimizing Storage and Bandwidth with Lossless Data Compression
 
 ### 🚧 Challenge  
 Compress large volumes of data efficiently without losing any information.
@@ -279,7 +279,7 @@ A **lossless compression algorithm** that assigns shorter binary codes to freque
 
 ---
 
-## 📌 Case Study 5: Segment Trees in Google Analytics
+## 📌 Case Study 5: Instantaneous Time-Series Analysis for Monitoring and Analytics
 
 ###  Challenge  
 Google systems like YouTube Analytics and Cloud Monitoring must perform **real-time range queries** (sum, min, max) and updates on **large time-series data** efficiently.
@@ -323,7 +323,7 @@ A **Segment Tree** is a binary tree that enables **log-time range queries and up
 Segment Trees offer a great trade-off between speed and flexibility for Google's dynamic data needs.
 
 ---
-## 📌 Case Study 6: Persistent Segment Trees in Workspace & Analytics
+## 📌 Case Study 6: Enabling Efficient Version Control with Queries
 
 ### Challenge  
 Modern systems like Google Docs, Sheets, and BigQuery need to:
@@ -370,7 +370,7 @@ Persistent Segment Trees combine algorithmic elegance with real-world practicali
 
 ---
 
-## 📌 Case Study 7: Mo's Algorithm in Query Optimization
+## 📌 Case Study 7:  Optimizing Large-Scale Offline Range Queries for Analytics
 
 ###  Challenge  
 In analytics systems like **Google Trends**, **YouTube Analytics**, or **Ad Reporting**, we often need to process **many offline range queries** like:
@@ -429,7 +429,7 @@ Running each query separately can be slow—especially on large datasets with ti
 Mo’s Algorithm shines when we know all queries upfront and want **speed without full recomputation**—perfect for **batch reporting** and **offline analytics**.
 
 ---
-## 📌 Case Study 8: Deferred Acceptance Algorithm
+## 📌 Case Study 8: Achieving Stable and Fair Matching in Resource Allocation( Deferred Acceptance Algorithm)
 
 ### Challenge  
 Efficiently pair two groups based on mutual preferences, ensuring **no two entities would prefer to deviate from their assigned match**—i.e., no instability.
@@ -465,7 +465,7 @@ This classic algorithm finds a **stable matching** in O(n²) time:
 Stable Marriage is a powerful abstraction for **fair, stable, and preference-driven assignments** across diverse use cases.
 
 ---
-## 📌 Case Study 9: Uniform Cost Search (UCS) in Resource Optimization
+## 📌 Case Study 9: Finding the Optimal Path in Cost-Sensitive Systems
 
 ### Challenge  
 Efficiently finding the lowest-cost path or optimal solution in large-scale graphs with varying edge costs, such as optimizing network routing or task scheduling in Google’s infrastructure.
@@ -505,7 +505,7 @@ UCS is a graph search algorithm that always expands the node with the smallest c
 Uniform Cost Search enables **optimal, cost-aware decision making** across Google’s large-scale, weighted graph problems, especially where multiple potential goals exist.
 
 ---
-## 📌 Case Study 10: Modular Multiplicative Inverse (MMI) in Secure Computation
+## 📌 Case Study 10: A Foundation for Security: Enabling Cryptography and Data Integrity
 
 ### Challenge  
 Google requires **efficient modular arithmetic** operations for cryptography, data integrity, and distributed systems, where modular division is needed but direct division is not possible.
@@ -547,7 +547,7 @@ Common methods to compute MMI:
 MMI is a fundamental building block enabling **secure, efficient, and reliable modular arithmetic** in Google's large-scale systems.
 
 ---
-## 📌 Case Study 11: Skip Lists for Efficient Ordered Data Access
+## 📌 Case Study 11:  Powering Scalable, Low-Latency Access to Ordered Data
 
 ### Challenge  
 Google services need to manage **large, dynamic datasets** with fast search, insertion, and deletion operations while maintaining sorted order and supporting range queries. Traditional balanced trees can be complex to implement and maintain at scale.
@@ -581,79 +581,48 @@ A **Skip List** is a layered, probabilistic data structure that enables **fast a
 Skip Lists offer a simpler and more concurrent-friendly alternative to balanced trees, making them ideal for Google’s need to handle massive, ordered data efficiently and reliably.
 
 ---
-## 📌 Case Study 12: Sliding Window Algorithm in Gmail and YouTube
+# 📌 Case Study 12: Real-Time Spam Detection in Gmail 
 
-###  The Challenge  
-At massive scale, Google services like **Gmail** and **YouTube** face a common problem: making real-time decisions from fast, continuous streams of data. Gmail must filter spam the moment an email arrives. YouTube needs to track engagement patterns and detect suspicious activity from billions of viewers.
+## 🔍 The Challenge  
+Gmail must detect spam **immediately** upon email arrival. With billions of emails sent daily, reprocessing entire datasets is too expensive.  
+We need an efficient method to extract insights from **continuous data streams**.
 
-But scanning entire datasets every second is too costly. Enter: the **Sliding Window Algorithm** — a powerful approach to manage time-sensitive insights efficiently.
+## ✅ Suggested Solution: Sliding Window Algorithm  
+The **Sliding Window** technique allows us to process only the **most recent subset** of data efficiently.
 
+- ✅ **Time Efficiency**: Only new data is processed as the window slides.  
+- ✅ **Space Efficiency**: Only the current window’s data is stored in memory.  
 
+> Where `k` is window size, `m` is length of the pattern, `n` is length of the text, `z` is total output size.
 
-###  The Algorithm: Sliding Window Approach  
-Sliding Window is a technique where a **subset of data** (the "window") is analyzed while moving through a larger dataset, step-by-step. It ensures:
-- **Constant-time updates** (as old data exits and new enters)
-- **Memory efficiency** (since only the window is stored)
-- **Real-time insights** (without reprocessing everything)
+## ✨ Proposed Applications in Gmail
 
+### 1. Spam Phrase Detection  
+- **Rabin-Karp Algorithm**: Rolling hash enables fast matching of phrases inside the window.  
+- **Aho-Corasick Algorithm**: Detects multiple spam phrases simultaneously in linear time.
 
+### 2. Sender Behavior Monitoring  
+- **Time-based sliding window** can track email sending rates.
+- **Token Bucket algorithm** can allow brief bursts but flag sustained high-volume behavior.
 
-###  In Gmail: Detecting Spam in Real-Time
+  
+### ⏱️ Time & Space Complexity
+| Operation                    | Time Complexity | Space Complexity |
+|-----------------------------|------------------|------------------|
+| Window Slide Update         | O(1)             | O(k)             |
+| Phrase Matching (Rabin-Karp)| O(m + n)         | O(1)             |
+| Multi-pattern Matching (Aho-Corasick) | O(n + z) | O(m·k)          |
 
-#### 1. **Spam Phrase Detection**  
-A window slides over email content to detect repeated suspicious phrases. This is often combined with:
-- **Rabin-Karp Algorithm**: Uses a rolling hash (sliding window of characters) to match known spam patterns(words sentences).
-- **Aho-Corasick Algorithm**: For multi-pattern matching, speeding up detection of multiple blacklisted phrases in a single scan.
+### ⚙️ Supporting Data Structures  
+| Data Structure    | Use Case                                                  |
+|-------------------|------------------------------------------------------------|
+| `Deque`           | Tracks max/min values, e.g., spike in send rate            |
+| `HashMap`         | Stores frequency of phrases or sender activity             |
+| `Rolling Hash`    | Efficient comparison of phrases inside the content window  |
 
-#### 2. **Sender Behavior Monitoring**  
-Gmail can monitor how many emails a user sends, and if it exceeds a certain threshold, the user and their emails may be flagged for further review.
+## 🎯 Final Impact  
+This approach enables **real-time spam filtering** without overloading Gmail’s systems, while maintaining user experience and system responsiveness.
 
-It can be a time-based sliding window, like rate limiting or the Token Bucket method, to help Gmail detect sudden bursts of activity without blocking normal short-term spikes.
-
-###  In YouTube: Engagement and Anomaly Detection
-
-#### **Watch-Time Analysis**  
-YouTube tracks where users **stop watching** a video. A sliding window moves through time-stamped engagement logs:
-- If many users drop off between `00:45`–`01:15`, this part is flagged as potentially boring or irrelevant.
-- Creators get feedback based on **aggregated sliding windows**, allowing them to improve content pacing.
-
-YouTube can use a sliding window approach to analyze real-time data during a live stream. This can help in:
-- Identifying the timestamp of peak viewership during a live stream.
-
-- Detecting spikes in subscriber growth over time.
-
-- Tracking when the most viewers liked and subscribed to the channel.
-
-- Analyzing the frequency of interactions to gain deeper insights into user behavior.
-
-- Deciding the optimal time to display ads, based on viewer engagement patterns.
-
-By continuously calculating these metrics within a sliding time window, YouTube can make smarter, data-driven decisions in real time.
-
-
-###  Algorithmic Details
-
-####  Core Data Structures Used
-
-| Data Structure      | Purpose                                           |
-|---------------------|---------------------------------------------------|
-| **Deque**           | Efficiently track max/min within a sliding window |
-| **HashMap**         | Count occurrences, manage frequency windows       |
-| **Rolling Hash**    | Used in Rabin-Karp for fast substring comparisons |
-
-
-#### 🔗 Common Algorithm Pairings
-
-| Algorithm            | Use Case with Sliding Window                         |
-|----------------------|------------------------------------------------------|
-| **Rabin-Karp**       | Rolling hash for substring matching                  |
-| **Aho-Corasick**     | Multiple pattern string matching                     |
-| **Token Bucket**     | Rate-limiting over a sliding time window             |
-
-
-
-###  Final Impact  
-The Sliding Window technique powers Gmail’s real-time spam detection and YouTube’s dynamic user engagement tracking. By focusing only on the **most recent and relevant** data, Google avoids performance bottlenecks while ensuring responsive, personalized experiences across its platforms.
 
 ---
 ##  📌 Case Study 13: Google Bigtable – Scalable Structured Data Storage
@@ -785,9 +754,6 @@ It also inspired:
 
 ## 🏢 Organization: Google – Play Store
 
----
-
-## 🎯 Summary
 
 Google Play Store delivers large-scale app updates (APKs/AABs) to billions of Android devices. Ensuring **security**, **efficiency**, and **data integrity**—especially on unreliable networks or against tampered APKs—is crucial.
 
@@ -819,7 +785,7 @@ Introducing Merkle Trees enables **chunk-level verification and secure patching*
    - Only changed chunks are downloaded (e.g., between app version 1.0 and 1.1).
    - Verified using Merkle proofs, ensuring only correct, untampered blocks are accepted.
 
----
+
 
 ## 🚀 Benefits
 
@@ -829,7 +795,7 @@ Introducing Merkle Trees enables **chunk-level verification and secure patching*
 - ✅ Reduces bandwidth and load on Google's infrastructure
 - ✅ Scales to billions of devices
 
----
+
 
 ## 🧠 Underlying Concepts
 
@@ -837,7 +803,7 @@ Introducing Merkle Trees enables **chunk-level verification and secure patching*
 - **Merkle Proof**: Enables client to verify individual chunk integrity.
 - **Digital Signature**: Authenticates the Merkle Root and prevents tampering.
 
----
+
 
 ## 💡 Suggestion for Enhancement
 
@@ -848,6 +814,55 @@ By integrating Merkle Trees more deeply with delta update mechanisms, Google can
 - Catch **any unauthorized modifications**, even if a single byte is altered
 
 ---
+# 📌 Case Study 12B: Live Engagement Analytics in YouTube using Sliding Window
+
+## 🔍 The Challenge  
+YouTube receives massive user engagement data every second. We need to process these streams in **real time** to support:
+
+- 📉 Viewer drop-off analysis  
+- 📈 Peak interaction tracking  
+- 🎯 Ad placement optimization  
+
+## ✅ Suggested Solution: Sliding Window for Streaming Analytics  
+By continuously moving a time window across live data, we can extract insights with minimal overhead.
+
+- ✅ **Real-time feedback**  
+- ✅ **Low memory consumption**  
+- ✅ **Avoid full data reprocessing**
+
+
+
+##  Applications in YouTube
+
+### 1. Watch-Time Drop Detection  
+- Analyze **engagement logs** within a sliding window to detect where viewers stop watching.
+- Flag timestamps like `00:45–01:15` as boring or disengaging.
+
+### 2. Real-Time Engagement Monitoring  
+Use sliding windows to track:
+-  **Live peak viewer counts**
+-  **Burst in likes/subscribers**
+-  **Optimal ad display timing**
+-  **Spikes in comments/interactions**
+
+###  Time & Space Complexity
+| Operation                        | Time Complexity | Space Complexity |
+|----------------------------------|------------------|------------------|
+| Engagement Window Slide Update   | O(1)             | O(k)             |
+| Aggregate Metrics (sum, avg, etc)| O(1) or O(log k) | O(k)             |
+| Spike/Peak Detection (e.g. via deque)| O(1)         | O(k)             |
+
+> Where `k` is the sliding window size (e.g., 60s of interactions).
+
+##  Supporting Data Structures  
+| Data Structure    | Use Case                                                       |
+|-------------------|-----------------------------------------------------------------|
+| `Deque`           | Efficient peak/min tracking within current window              |
+| `HashMap`         | Aggregation and categorization of interaction types            |
+| `Rolling Hash`    | Less relevant here, but can be used in video content fingerprinting |
+
+##  Final Impact  
+Sliding Window-based analysis empowers YouTube to **adapt content delivery** and **enhance viewer experience**, all while handling massive-scale, high-frequency data.
 
 ---
 ## 📊 Business Case Studies
