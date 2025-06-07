@@ -689,7 +689,7 @@ By integrating Merkle Trees more deeply with delta update mechanisms, Google can
 - Catch **any unauthorized modifications**, even if a single byte is altered
 
 ---
-##📌 Case Study 14: Live Engagement Analytics in YouTube using Sliding Window
+## 📌 Case Study 14: Live Engagement Analytics in YouTube using Sliding Window
 
 ##  The Challenge  
 YouTube receives massive user engagement data every second. We need to process these streams in **real time** to support:
