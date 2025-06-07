@@ -163,87 +163,47 @@ In practice, **A\*** performs significantly faster due to the heuristic narrowin
 
 
 ---
-# 📌Accelerating Location-Based Search
+# 📌 Case Study: Accelerating Location-Based Search with KD-Tree
 
-### Challenge in Real-Time Systems  
-Rapidly finding the nearest points of interest—such as businesses, data centers, or delivery hubs—based on a user’s current position. In large-scale, high-traffic environments, latency is critical: users expect sub-second responses for “find nearby” queries.
-
-
-### Solution Overview: Using KD-Tree (K-Dimensional Tree)  
-A **KD-Tree** is a binary space-partitioning structure that organizes points in a K-dimensional space (e.g., latitude and longitude when K = 2). By recursively splitting the dataset along alternating dimensions, KD-Trees enable efficient nearest-neighbor and range queries, making them ideal for real-time, location‐aware services.
-
-- **Maps & Local Search:**  
-  Quickly locate nearby ATMs, restaurants, or gas stations using the user’s GPS coordinates.
-
-- **Delivery & Logistics:**  
-  Assign the closest available driver or courier to a pickup point, minimizing travel time and cost.
-
-- **Cloud Infrastructure & CDNs:**  
-  Route user requests to the geographically nearest data center or edge server, reducing latency.
-
-
-### Data Structures Employed  
-- **KD-Tree**  
-  - Organizes N geo-points (e.g., `[lat, lon]`) in a balanced binary tree.  
-  - Each node splits its subset of points along one dimension (cycling through latitude, longitude, latitude, …).  
-  - Enables average-case \(O(\log N)\) nearest-neighbor queries.
-
-- **Max Heap (Priority Queue)**  
-  - Maintains the top-K closest points when performing a K nearest-neighbors (KNN) search.  
-  - As the KD-Tree search descends, any candidate farther than the current Kth nearest is pruned.
-
-
-
-### Algorithm: K-Dimensional Search (K = 2 for latitude/longitude)  
-1. **Build Phase** (\(O(N \log N)\), \(O(N)\) space)  
-   - Recursively select a splitting dimension (alternating between latitude and longitude).  
-   - Sort or compute the median of points along that dimension.  
-   - Create a node storing the median point; recurse on left/right subsets.
-
-2. **Query Phase** (Average \(O(\log N)\))  
-   - Start at the root, comparing the target point’s coordinate in the current split dimension.  
-   - Recursively traverse toward the subtree that contains the target.  
-   - Upon backtracking, check whether the “other side” of the split could contain closer points—prune if the splitting plane is farther than our current Kth nearest.  
-   - Use a Max Heap to track the top-K closest points seen so far.  
-
-3. **Result Collection** (\(O(K)\) extra space)  
-   - After traversal, extract the K nearest points from the Max Heap in descending order of distance (or read them inwards if maintaining a size-K min-heap instead).
-
-
-
-### Time & Space Complexity  
-
-| Operation          | Time Complexity    | Space Complexity |
-|--------------------|--------------------|------------------|
-| Build (bulk insert)| \(O(N \log N)\)    | \(O(N)\)         |
-| Nearest Neighbor   | \(O(\log N)\) avg  | \(O(K)\)         |
-| Range Query        | \(O(\log N + R)\)  | \(O(R)\)         |
-
-- **N** = total number of locations  
-- **K** = dimensions (e.g., 2 for lat/lon)  
-- **R** = number of reported points in a range query
-
-
-
-### Kd can be used in 
-
-1. **Maps & Local Search**  
-   - **“Find nearby cafés”**:  
-     - User’s GPS = `[lat₀, lon₀]`.  
-     - Query a KD-Tree of millions of POIs to return the closest 10 eateries in under 50 ms.
-
-
-3. **CDN & Edge Routing**  
-   - **“Route user traffic”**:  
-     - Predefine server locations (data centers, edge nodes) in a static KD-Tree.  
-     - For each incoming request, map its IP to geolocation and perform a KD-Tree lookup to identify the nearest node, reducing round-trip latency.
-
-4. **High-Dimensional ML Pipelines **  
-   - we can also build KD-Trees over high-dimensional feature vectors to accelerate KNN-based recommendations or clustering tasks. 
+## 💡 Problem  
+How can systems like **Google Maps**, **Zomato**, or **CDNs** quickly find the **nearest location** (restaurant, driver, server) based on a user's current position—**in real time**?
 
 ---
 
+## ✅ Solution: KD-Tree (K-Dimensional Tree)
 
+A **KD-Tree** is a binary tree that organizes points in space (like latitude & longitude). It enables:
+- **Fast nearest-neighbor searches**
+- **Efficient range queries**  
+Perfect for geo-based systems.
+
+
+##  How It Works
+
+### 1. **Build Tree**  
+- Recursively split points on alternating dimensions (lat, lon).
+- Build takes **O(N log N)** time.
+
+### 2. **Search**  
+- Traverse tree comparing user's location with nodes.
+- Use a **priority queue** (Max Heap) to keep the top-K closest points.
+- Prune distant branches for speed.
+
+---
+
+##  Time & Space Complexity
+
+| Operation         | Time (Avg)   | Space      |
+|-------------------|--------------|------------|
+| Build Tree        | O(N log N)   | O(N)       |
+| Nearest Search    | O(log N)     | O(K)       |
+
+> N = number of locations  
+> K = number of nearest results
+
+
+
+ **KD-Trees** strike a great balance between speed and accuracy, making them essential for real-time, location-aware systems.
 
 
 ---
@@ -306,56 +266,65 @@ A **Segment Tree** is a binary tree that enables **log-time range queries and up
 
 
 
-###  Real-World Use at Google  
--  **YouTube Analytics:** Fast stats over time ranges  
--  **Cloud Monitoring:** Min/max for anomaly detection  
--  **Google Ads:** Aggregate metrics over campaigns
-Segment Trees offer a great trade-off between speed and flexibility for Google's dynamic data needs.
+---
+# 📌 Case Study 6: Enabling Efficient Version Control with Queries
+
+##  Challenge  
+Modern systems like **Google Docs**, **Sheets**, and **BigQuery** need to:
+- Track data over time (version control)
+- Support **rollback/undo**
+- Enable **temporal queries** — all **without duplicating** entire datasets for each change
 
 ---
-## 📌 Case Study 6: Enabling Efficient Version Control with Queries
 
-### Challenge  
-Modern systems like Google Docs, Sheets, and BigQuery need to:
-- Track data over time (version control),
-- Support rollback/undo, and  
-- Enable temporal queries — all without duplicating entire datasets for each change.
+##  Solution: Persistent Segment Trees  
 
+A **Persistent Segment Tree** maintains multiple versions by copying only the **modified nodes** during updates, while **sharing** the rest of the structure. This allows efficient **time-based querying and updates**.
 
-### Solution: Persistent Segment Trees  
+---
+## algorithm
 
-A Persistent Segment Tree maintains multiple versions of a data structure by copying only the modified nodes during updates, while sharing unchanged parts. This allows time-based querying and editing to be efficient in both space and time.
+- Each update creates a **new root** version.
+- Previous versions remain intact.
+- Ideal for querying across different versions.
 
-#### Algorithmic Insights  
-- Each update creates a new root, preserving previous versions.
-- Time & space per update: O(log n).
-- Supports:
-  - `update(index, value, version)` → returns new version  
-  - `query(left, right, version)` → returns range result from a specific version
-
-#### Core Concepts  
-- Immutability + Sharing: Trees use structural sharing instead of full duplication.
-- Functional Approach: Perfect for stateless backends and version-aware analytics.
+###  Supported Operations
+- `update(index, value, version)` → creates a new version
+- `query(left, right, version)` → returns result for a specific range in a version
 
 
-### Use Cases  
+##  Core Concepts
 
-| Use Case              | Description |
-|-----------------------|-------------|
-| Google Docs           | Maintain full edit history without copying entire documents |
-| Google Sheets         | Versioned formulas/data to support undo, audit logs |
-| BigQuery              | Enable historical range queries over time-partitioned data |
-| Cloud IDEs            | Efficient Undo/Redo, branchable code state management |
-| CI/CD Systems         | Track config/data changes across deployment snapshots |
+| Concept         | Description                                       |
+|------------------|---------------------------------------------------|
+| Immutability     | Each version is a read-only snapshot              |
+| Structural Sharing | Only changed path is duplicated (rest reused) |
+| Functional Design | Works well in distributed, stateless systems     |
 
 
 
-### Why It's Powerful  
-- Memory-Efficient: Only log(n) new nodes per version  
-- Time-Aware Queries: Critical for analytics and debugging  
-- Immutable + Parallelizable: Great for distributed/cloud systems
+##  Time & Space Complexity
 
-Persistent Segment Trees combine algorithmic elegance with real-world practicality, enabling Google-scale systems to be both version-aware and performance-efficient.
+| Operation        | Time Complexity | Space Complexity per Update |
+|------------------|------------------|------------------------------|
+| Build Tree       | O(n)             | O(n)                         |
+| Update           | O(log n)         | O(log n)                     |
+| Range Query      | O(log n)         | O(1)                         |
+| Version Storage  | —                | O(log n) per version         |
+
+> `n` = number of elements in array or range  
+> Only `log n` new nodes are created per update, making it **space-efficient**.
+
+
+
+##  Real-World Use Cases
+
+|
+
+
+
+ **Persistent Segment Trees** offer the perfect balance of **versioning**, **efficiency**, and **query power**, making them ideal for systems where **history matters**.
+
 
 
 ---
@@ -374,15 +343,6 @@ Running each query separately can be slow—especially on large datasets with ti
 
 ###  Solution: Mo’s Algorithm  
 **Mo’s Algorithm** is an offline query optimization technique for **range queries**. It **reorders** the queries smartly to minimize redundant work when moving from one query to another.
-
- Key Idea: Sort all queries to **minimize array changes**, then process them using a **sliding window** with efficient insert/remove logic.
-
-
-
-###  Core Components  
-- **Range Queries:** Typically of the form `[L, R]`  
-- **Sorting Strategy:** Queries are sorted by blocks of √N (and R for tie-breaking)  
-- **Add/Remove Functions:** Efficiently manage changes when moving the window
 
 
 ###  working  
@@ -422,7 +382,7 @@ Mo’s Algorithm shines when we know all queries upfront and want **speed withou
 # 📌 Case Study 8: Efficient Tokenization in Large AI Models
 
 ##   AI Context Management Problem  
-Large language models (LLMs) like **ChatGPT** and **Gemini** operate on **tokens** (sub-word units). The system must:  
+Large language models (LLMs) like   **Gemini** operate on **tokens** . The system must:  
 - Map input text to tokens efficiently  
 - Handle **millions of vocabulary entries**  
 - Do so with **minimal latency** during inference  
@@ -440,11 +400,7 @@ Large language models (LLMs) like **ChatGPT** and **Gemini** operate on **tokens
 
 ## ⚙️ Tokenization Algorithm
 
-1. **Preprocess:**
-   - Use subword tokenization (e.g., **Byte Pair Encoding**, **WordPiece**)
-   - Store vocabulary in a Trie
-
-2. **Tokenize Input:**
+ **Tokenize Input:**
    - Read input string character-by-character
    - Match the **longest prefix** in the Trie
    - Convert to corresponding token ID (via hash map or array)
@@ -482,27 +438,11 @@ A **ring buffer** allows:
 2. As new tokens are generated or input, they **overwrite** the oldest ones.
 3. This structure is ideal for **chatbots**, where ongoing conversation history must be preserved up to a limit.
 
-| Feature               | Benefit                          |
-|-----------------------|----------------------------------|
-| Fixed-size memory     | Prevents overflows               |
-| Fast overwrite        | O(1) token replacement           |
-| Constant time access  | Efficient for real-time updates  |
-
----
-
-##  Real-World Usage
-
--  **LLMs** (ChatGPT, Gemini, Claude)  
--  **Tokenizers** (BPE, Unigram, WordPiece)  
--  **Context Tracking:** Efficient sliding window using ring buffer  
--  **Real-time inference pipelines**
 
  **Combining Trie for tokenization and Ring Buffer for context control enables scalable, high-performance AI systems.**
 
-
-
 ---
-## 📌 Case Study 9: Achieving Stable and Fair Matching in Resource Allocation( Deferred Acceptance Algorithm)
+## 📌 Case Study 9: Achieving Stable and Fair Matching in Resource Allocation
 
 ### Challenge  
 Efficiently pair two groups based on mutual preferences, ensuring **no two entities would prefer to deviate from their assigned match**—i.e., no instability.
@@ -620,38 +560,53 @@ Common methods to compute MMI:
 MMI is a fundamental building block enabling **secure, efficient, and reliable modular arithmetic** in Google's large-scale systems.
 
 ---
-## 📌 Case Study 12:  Powering Scalable, Low-Latency Access to Ordered Data
+# 📌 Case Study 12: Enabling Real-Time Sorted Access in Distributed Databases
 
-### Challenge  
-Google services need to manage **large, dynamic datasets** with fast search, insertion, and deletion operations while maintaining sorted order and supporting range queries. Traditional balanced trees can be complex to implement and maintain at scale.
+##  Problem: Maintaining Ordered Data with Fast Range Access  
+Systems like **Bigtable**, **Cloud Spanner**, and **LevelDB** must handle:
+- **Massive dynamic datasets**
+- Frequent **inserts/deletes**
+- Fast **range scans** and **point lookups**
+- With **low latency** and **high concurrency**
 
+Traditional balanced trees (e.g., AVL, Red-Black) are **hard to scale** across threads and machines due to complex rotations and locking.
 
+## ✅Solution: Skip List
 
-### Solution: Skip List  
-A **Skip List** is a layered, probabilistic data structure that enables **fast average-case O(log n)** operations by maintaining multiple forward pointers that “skip” over elements, creating express lanes through the list.
-
-- Data is stored in sorted order across multiple linked list levels.  
-- Nodes are randomly promoted to higher levels to balance the structure without complex rotations.  
-- Searches start from the highest level and drop down, skipping many elements for speed.
-
-
-### Real-Time Use Cases at Google  
-- **Bigtable & LevelDB:** Skip Lists are core to their internal indexing, enabling efficient range scans and real-time updates on large distributed datasets.  
-- **Google Cloud Spanner:** Uses Skip List variants for managing transactional indexes that require quick updates and lookups.  
-- **Real-time Analytics & Caching:** Facilitates fast insertion and queries in memory caches and streaming data processing systems.  
-- **Concurrent Data Structures:** Skip Lists adapt well to multi-threaded environments, making them suitable for high-concurrency Google infrastructure components.
-
-### Time Complexity  
-
-| Operation  | Average Time Complexity |
-|------------|------------------------|
-| Search     | O(log n)               |
-| Insert     | O(log n)               |
-| Delete     | O(log n)               |
+A **Skip List** is a probabilistic data structure that behaves like a multi-level linked list. It offers:
 
 
 
-Skip Lists offer a simpler and more concurrent-friendly alternative to balanced trees, making them ideal for Google’s need to handle massive, ordered data efficiently and reliably.
+### 🧠 How It Works  
+- Each node may appear in multiple “levels” (randomly promoted)
+- Higher levels act as **express lanes** for faster traversal
+- Start search from the top, move forward until passed target, then drop down
+
+## 🧪 Real-World Use Case: Google Bigtable’s Internal Index
+
+Google Bigtable stores data in **sorted key-value pairs**. To:
+- **Insert rows in sorted order**
+- **Query ranges of rows**
+- **Delete outdated entries efficiently**
+
+Skip Lists can be used  for **in-memory indexing (MemTable)**.
+
+
+
+## ⏱️ Time Complexity (Average)
+
+| Operation | Time Complexity |
+|-----------|------------------|
+| Search    | O(log n)         |
+| Insert    | O(log n)         |
+| Delete    | O(log n)         |
+
+- Insertions and deletions don’t require rebalancing.
+- Randomization replaces structural complexity.
+
+
+ **Skip Lists** strike a perfect balance between simplicity and performance—powering real-time, ordered access across Google’s large-scale storage engines.
+
 
 ---
 ## 📌 Case Study 13: Real-Time Spam Detection in Gmail 
@@ -707,7 +662,6 @@ This approach enables **real-time spam filtering** without overloading Gmail’s
 
 Google Play Store delivers large-scale app updates (APKs/AABs) to billions of Android devices. Ensuring **security**, **efficiency**, and **data integrity**—especially on unreliable networks or against tampered APKs—is crucial.
 
----
 
 ##  Key Challenges
 
@@ -723,7 +677,7 @@ Google Play Store delivers large-scale app updates (APKs/AABs) to billions of An
 
 Introducing Merkle Trees enables **chunk-level verification and secure patching** during updates.
 
-###  How It Works
+###  Algorithm
 
 1. **Chunking**: APK/AAB is split into fixed-size blocks (e.g., 4 KB).
 2. **Leaf Hashing**: Each chunk is hashed using SHA-256.
@@ -815,64 +769,7 @@ Use sliding windows to track:
 Sliding Window-based analysis empowers YouTube to **adapt content delivery** and **enhance viewer experience**, all while handling massive-scale, high-frequency data.
 
 ---
-## 📊 Business Case Studies
 
-### 1. 🚀 Improving Search Result Relevance
-- **Challenge:** How can we improve the accuracy and speed of Google Search?
-- **Solution:** Implemented a search engine simulation using **Trie** for autocomplete and **Edit Distance (Dynamic Programming)** for typo correction. Graph algorithms help cluster similar queries.
-- **DSA Concepts Used:** Trie, Hashing, Dynamic Programming, Graph Clustering  
-- **Impact:** Better user query understanding and faster retrieval with reduced search latency.
-
----
-
-### 2. 📨 Email Categorization at Scale (Gmail)
-- **Challenge:** How can Gmail categorize millions of emails in real-time?
-- **Solution:** Designed a classification system using **Priority Queues** and **Pattern Matching**, simulating how emails are tagged into Primary, Social, and Promotions.
-- **DSA Concepts Used:** Priority Queue, HashMaps, Regex Matching  
-- **Impact:** Efficiently manages incoming email load and enhances user experience.
-
----
-
-### 3. 🗺️ Google Maps Route Optimization
-- **Challenge:** How to find the most efficient route with real-time traffic?
-- **Solution:** Built a routing algorithm using **Dijkstra's** and **A\*** to simulate shortest paths with dynamic traffic weights.
-- **DSA Concepts Used:** Graphs, Heaps, Shortest Path Algorithms  
-- **Impact:** Real-time navigation with dynamic rerouting boosts commute efficiency.
-
----
-
-### 4. 📺 YouTube Recommendation Engine
-- **Challenge:** How can YouTube recommend personalized and engaging videos?
-- **Solution:** Created a simple recommendation system using **Graph traversal** and **Frequency Trees** based on user behavior.
-- **DSA Concepts Used:** Trees, Graphs, Frequency Counters  
-- **Impact:** More relevant content suggestions leading to longer watch times.
-
----
-
-### 5. 🖼️ Google Photos Compression Engine
-- **Challenge:** How to store billions of images efficiently?
-- **Solution:** Developed a basic image compression model using **Huffman Encoding**.
-- **DSA Concepts Used:** Trees, Greedy Algorithms, Dynamic Programming  
-- **Impact:** Optimized memory storage with lossless image compression.
-
----
-
-### 6. 🧮 Distributed Log Processing (MapReduce)
-- **Challenge:** How to process petabytes of data across multiple servers?
-- **Solution:** Simulated a **MapReduce** model using **Divide and Conquer** techniques and **Parallel Computing** strategies.
-- **DSA Concepts Used:** Divide and Conquer, Sorting, Hash Maps, Parallelism  
-- **Impact:** Efficient and scalable data processing framework.
-
----
-
-## 🧠 My Technical Stack
-
-- **Languages:** Python, C++, JavaScript  
-- **Tools:** Git, VS Code, Google Colab, Jupyter, Postman  
-- **Libraries:** NumPy, Pandas, Matplotlib, Scikit-learn  
-- **Platforms:** GitHub, Google Cloud, Firebase, Kaggle  
-
----
 
 ## 🎯 Objective
 
