@@ -607,6 +607,7 @@ The **Sliding Window** technique allows us to process only the **most recent sub
 
   
 ###  Time & Space Complexity
+
 | Operation                    | Time Complexity | Space Complexity |
 |-----------------------------|------------------|------------------|
 | Window Slide Update         | O(1)             | O(k)             |
@@ -614,6 +615,7 @@ The **Sliding Window** technique allows us to process only the **most recent sub
 | Multi-pattern Matching (Aho-Corasick) | O(n + z) | O(m·k)          |
 
 ###  Supporting Data Structures  
+
 | Data Structure    | Use Case                                                  |
 |-------------------|------------------------------------------------------------|
 | `Deque`           | Tracks max/min values, e.g., spike in send rate            |
