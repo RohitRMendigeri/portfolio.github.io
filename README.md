@@ -581,7 +581,7 @@ A **Skip List** is a layered, probabilistic data structure that enables **fast a
 Skip Lists offer a simpler and more concurrent-friendly alternative to balanced trees, making them ideal for Google’s need to handle massive, ordered data efficiently and reliably.
 
 ---
-# 📌 Case Study 12: Real-Time Spam Detection in Gmail 
+## 📌 Case Study 12: Real-Time Spam Detection in Gmail 
 
 ## 🔍 The Challenge  
 Gmail must detect spam **immediately** upon email arrival. With billions of emails sent daily, reprocessing entire datasets is too expensive.  
@@ -624,133 +624,10 @@ The **Sliding Window** technique allows us to process only the **most recent sub
 This approach enables **real-time spam filtering** without overloading Gmail’s systems, while maintaining user experience and system responsiveness.
 
 
----
-##  📌 Case Study 13: Google Bigtable – Scalable Structured Data Storage
 
-##  Problem Statement
-
-Google required a storage system that could:
-
-- Handle **petabytes of structured data**
-- Provide **low-latency access**
-- Support **real-time read/write operations**
-- Scale across **thousands of commodity servers**
-
-Traditional RDBMS systems couldn’t meet these requirements. Hence, **Bigtable** was developed.
 
 ---
-
-##  Solution:
-
-**Bigtable** is a distributed, sparse, multidimensional sorted map. The data model can be visualized as: (row_key, column_family:column_qualifier, timestamp) → value
-
-
-This design supports:
-
-- **Versioning** (with timestamps)
-- **Efficient lookups**
-- **Horizontal scalability**
-
-
-
-##  Core Data Structures in Bigtable
-
-### 1. MemTable
-- An **in-memory** sorted data structure (usually implemented as a Red-Black Tree or Skip List).
-- Accumulates writes.
-- Flushed to disk as **SSTables** when full.
-
-### 2. SSTable (Sorted String Table)
-- Immutable file storing key-value pairs sorted by key.
-- Organized to allow **binary search** and **range scans**.
-- Used for **persistent storage** on disk.
-
-### 3. Write-Ahead Log (WAL)
-- Also known as a **commit log**.
-- Records mutations before applying to the memtable.
-- Ensures **durability** in case of crashes.
-
-### 4. Bloom Filters
-- Used to **quickly check** if an SSTable might contain a key.
-- Probabilistic, avoids unnecessary disk reads.
-- Time complexity: O(1) for lookup.
-
-### 5. Tablet
-- A **horizontal partition** of a Bigtable table.
-- Each tablet is served by one tablet server.
-- Tablets contain SSTables + a memtable + metadata.
-
-### 6. B+ Tree-Like Structure
-- Underlying datastructure in SSTables to support **fast range queries**.
--  Uses binary Search.
-
-
-
-
-##  Bigtable Workflow: Read/Write Operations
-
-###  Write Path
-
-1. **Client sends a write** (put/delete).
-2. Write is recorded in the **Write-Ahead Log (WAL)**.
-3. Write is inserted into the **MemTable**.
-4. When MemTable grows large:
-   - It's **flushed** to disk as an **SSTable**.
-   - SSTables are stored in **GFS (Google File System)**.
-
-###  Read Path
-
-1. Client requests a key or key range.
-2. Bigtable checks:
-   - **MemTable** (for recent writes)
-   - **Bloom Filters** to identify relevant SSTables
-   - **SSTables** (older, persisted data)
-3. Results are **merged** (newest timestamp wins).
-
-
-
-##  Compaction Process
-
-To maintain performance, Bigtable performs **compaction**:
-
-- **Minor Compaction**: Merge small SSTables.
-- **Major Compaction**: Merge all SSTables into one.
-- **Garbage Collection**: Removes deleted/expired entries.
-
-This keeps read paths efficient by reducing the number of SSTables per tablet.
-
-
-
-##  Time  Complexity
-
-| Operation         | Time Complexity      | Notes                                    |
-|-------------------|----------------------|-------------------------------------------|
-| **Write**         |  O(1)                | Buffered in memtable                      |
-| **Read (lookup)** | O(log n + k)         | Log n for SSTable + k for merging versions |
-| **Range Scan**    | O(k)                 | Efficient due to SSTable sorting          |
-| **Compaction**    | O(n)                 | Depends on size of SSTables being merged  |
-
-
-
-
-##  Use in Google's Ecosystem
-
-Bigtable is used in:
-
-- **Google Search** – Indexing web pages
-- **Google Maps** – Spatial data
-- **Google Analytics** – Event data
-- **YouTube** – Metadata and user preferences
-- **Google Earth** – Geospatial data
-
-It also inspired:
-
-- Apache HBase (Hadoop ecosystem)
-- Cassandra (Facebook, now open source)
-- Amazon DynamoDB (inspired by similar principles)
-
----
-# 📦 Case Study: Enhancing Android App Update Integrity with Merkle Trees
+## Case Study 13: Enhancing Android App Update Integrity with Merkle Trees
 
 ## 🏢 Organization: Google – Play Store
 
@@ -787,17 +664,17 @@ Introducing Merkle Trees enables **chunk-level verification and secure patching*
 
 
 
-## 🚀 Benefits
+##  Benefits
 
-- ✅ Detects tampered APKs (even if modified offline)
-- ✅ Secure resumption of interrupted downloads
-- ✅ Efficient updates by downloading only changed chunks
-- ✅ Reduces bandwidth and load on Google's infrastructure
-- ✅ Scales to billions of devices
+-  Detects tampered APKs (even if modified offline)
+-  Secure resumption of interrupted downloads
+-  Efficient updates by downloading only changed chunks
+-  Reduces bandwidth and load on Google's infrastructure
+-  Scales to billions of devices
 
 
 
-## 🧠 Underlying Concepts
+##  Underlying Concepts
 
 - **Merkle Tree**: Binary tree of SHA-256 hashes built from app chunks.
 - **Merkle Proof**: Enables client to verify individual chunk integrity.
@@ -805,7 +682,7 @@ Introducing Merkle Trees enables **chunk-level verification and secure patching*
 
 
 
-## 💡 Suggestion for Enhancement
+##  Enhancements
 
 By integrating Merkle Trees more deeply with delta update mechanisms, Google can further:
 
@@ -814,7 +691,7 @@ By integrating Merkle Trees more deeply with delta update mechanisms, Google can
 - Catch **any unauthorized modifications**, even if a single byte is altered
 
 ---
-# 📌 Case Study 12B: Live Engagement Analytics in YouTube using Sliding Window
+# 📌 Case Study 14: Live Engagement Analytics in YouTube using Sliding Window
 
 ## 🔍 The Challenge  
 YouTube receives massive user engagement data every second. We need to process these streams in **real time** to support:
