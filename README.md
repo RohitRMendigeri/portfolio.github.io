@@ -583,19 +583,19 @@ Skip Lists offer a simpler and more concurrent-friendly alternative to balanced 
 ---
 ## 📌 Case Study 12: Real-Time Spam Detection in Gmail 
 
-## 🔍 The Challenge  
+##  The Challenge  
 Gmail must detect spam **immediately** upon email arrival. With billions of emails sent daily, reprocessing entire datasets is too expensive.  
 We need an efficient method to extract insights from **continuous data streams**.
 
-## ✅ Suggested Solution: Sliding Window Algorithm  
+## Suggested Solution: Sliding Window Algorithm  
 The **Sliding Window** technique allows us to process only the **most recent subset** of data efficiently.
 
-- ✅ **Time Efficiency**: Only new data is processed as the window slides.  
-- ✅ **Space Efficiency**: Only the current window’s data is stored in memory.  
+-  **Time Efficiency**: Only new data is processed as the window slides.  
+-  **Space Efficiency**: Only the current window’s data is stored in memory.  
 
 > Where `k` is window size, `m` is length of the pattern, `n` is length of the text, `z` is total output size.
 
-## ✨ Proposed Applications in Gmail
+## Proposed Applications in Gmail
 
 ### 1. Spam Phrase Detection  
 - **Rabin-Karp Algorithm**: Rolling hash enables fast matching of phrases inside the window.  
@@ -606,21 +606,21 @@ The **Sliding Window** technique allows us to process only the **most recent sub
 - **Token Bucket algorithm** can allow brief bursts but flag sustained high-volume behavior.
 
   
-### ⏱️ Time & Space Complexity
+###  Time & Space Complexity
 | Operation                    | Time Complexity | Space Complexity |
 |-----------------------------|------------------|------------------|
 | Window Slide Update         | O(1)             | O(k)             |
 | Phrase Matching (Rabin-Karp)| O(m + n)         | O(1)             |
 | Multi-pattern Matching (Aho-Corasick) | O(n + z) | O(m·k)          |
 
-### ⚙️ Supporting Data Structures  
+###  Supporting Data Structures  
 | Data Structure    | Use Case                                                  |
 |-------------------|------------------------------------------------------------|
 | `Deque`           | Tracks max/min values, e.g., spike in send rate            |
 | `HashMap`         | Stores frequency of phrases or sender activity             |
 | `Rolling Hash`    | Efficient comparison of phrases inside the content window  |
 
-## 🎯 Final Impact  
+##  Final Impact  
 This approach enables **real-time spam filtering** without overloading Gmail’s systems, while maintaining user experience and system responsiveness.
 
 
@@ -629,14 +629,12 @@ This approach enables **real-time spam filtering** without overloading Gmail’s
 ---
 ## Case Study 13: Enhancing Android App Update Integrity with Merkle Trees
 
-## 🏢 Organization: Google – Play Store
-
 
 Google Play Store delivers large-scale app updates (APKs/AABs) to billions of Android devices. Ensuring **security**, **efficiency**, and **data integrity**—especially on unreliable networks or against tampered APKs—is crucial.
 
 ---
 
-## 🧩 Key Challenges
+##  Key Challenges
 
 - **Large File Sizes**: APKs often exceed 100 MB.
 - **Update Resumption**: Failed downloads traditionally require restarting.
@@ -646,11 +644,11 @@ Google Play Store delivers large-scale app updates (APKs/AABs) to billions of An
 
 ---
 
-## ✅ Solution: Merkle Tree-Based Integrity Verification
+##  Solution: Merkle Tree-Based Integrity Verification
 
 Introducing Merkle Trees enables **chunk-level verification and secure patching** during updates.
 
-### 🔧 How It Works
+###  How It Works
 
 1. **Chunking**: APK/AAB is split into fixed-size blocks (e.g., 4 KB).
 2. **Leaf Hashing**: Each chunk is hashed using SHA-256.
@@ -667,7 +665,7 @@ Introducing Merkle Trees enables **chunk-level verification and secure patching*
 ##  Benefits
 
 -  Detects tampered APKs (even if modified offline)
--  Secure resumption of interrupted downloads
+-  Secure resumption of interrupted downloads (helpful for larger data)
 -  Efficient updates by downloading only changed chunks
 -  Reduces bandwidth and load on Google's infrastructure
 -  Scales to billions of devices
@@ -691,21 +689,21 @@ By integrating Merkle Trees more deeply with delta update mechanisms, Google can
 - Catch **any unauthorized modifications**, even if a single byte is altered
 
 ---
-# 📌 Case Study 14: Live Engagement Analytics in YouTube using Sliding Window
+##📌 Case Study 14: Live Engagement Analytics in YouTube using Sliding Window
 
-## 🔍 The Challenge  
+##  The Challenge  
 YouTube receives massive user engagement data every second. We need to process these streams in **real time** to support:
 
-- 📉 Viewer drop-off analysis  
-- 📈 Peak interaction tracking  
-- 🎯 Ad placement optimization  
+-  Viewer drop-off analysis  
+-  Peak interaction tracking  
+-  Ad placement optimization  
 
-## ✅ Suggested Solution: Sliding Window for Streaming Analytics  
+##  Suggested Solution: Sliding Window for Streaming Analytics  
 By continuously moving a time window across live data, we can extract insights with minimal overhead.
 
-- ✅ **Real-time feedback**  
-- ✅ **Low memory consumption**  
-- ✅ **Avoid full data reprocessing**
+-  **Real-time feedback**  
+-  **Low memory consumption**  
+-  **Avoid full data reprocessing**
 
 
 
